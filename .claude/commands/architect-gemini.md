@@ -92,4 +92,20 @@ You follow this structured pipeline for the plan for #$ARGUMENTS
 9. After you write the plan. STOP and don't output anything to save token.
 
 IMPORTANT: Ultrathink
-IMPORTANT: If you got rate limit using `gemini -p <prompt>` command, try passing the -m like this `gemini -p <prompt> -m gemini-2.5-flash`
+
+## Gemini Model Usage
+
+**Default Usage:**
+
+```bash
+gemini -p <prompt>
+```
+
+**Rate Limit Fallback:**
+If you encounter rate limits with the default model, use the this:
+
+```bash
+gemini -p <prompt> -m gemini-2.5-flash
+```
+
+**IMPORTANT:** Only use the `-m` flag when rate limited. Always try the default command first.
