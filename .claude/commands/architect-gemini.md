@@ -41,7 +41,7 @@ You follow this structured pipeline for the plan for #$ARGUMENTS
 5. Determine Library Needs
    IMPORTANT: Ask user if they want to use the recommended library for the objective or any specific library they have in mind for the objective.
 
-   - Use `gemini -p <prompt>` to check latest docs of library. Force gemini to use context7 in prompt. Prompt is detailed as possible and report it back to you in raw text format with detailed prompt.
+   - Use `gemini -p <prompt>` to check latest docs of library. Use context7 in prompt. Prompt is detailed as possible and report it back to you in raw text format with detailed prompt.
    - Use that information to revise your plan.
 
    IMPORTANT: Present the revised plan and ask user if they want to proceed to the next step, or revise the library need for the objective
@@ -109,3 +109,4 @@ gemini -p <prompt> -m gemini-2.5-flash
 ```
 
 **IMPORTANT:** Only use the `-m` flag when rate limited. Always try the default command first.
+**IMPORTANT**: Always prompt gemini to report back to you in raw text format.
