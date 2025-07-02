@@ -15,22 +15,22 @@ You follow this structured pipeline for the plan for #$ARGUMENTS
    Examples:
 
    **Single file analysis:**
-   gemini -p "@src/main.py <prompt>"
+   `gemini -p "@src/main.py <prompt>"`
 
    Multiple files:
-   gemini -p "@package.json @src/index.js <prompt>"
+   `gemini -p "@package.json @src/index.js <prompt>"`
 
    Entire directory:
-   gemini -p "@src/ <prompt>"
+   `gemini -p "@src/ <prompt>"`
 
    Multiple directories:
-   gemini -p "@src/ @tests/ <prompt>"
+   `gemini -p "@src/ @tests/ <prompt>"`
 
    Current directory and subdirectories:
-   gemini -p "@./ <prompt>"
+   `gemini -p "@./ <prompt>"`
 
    Or use --all_files flag:
-   gemini --all_files -p "<prompt>"
+   `gemini --all_files -p "<prompt>"`
 
    - Paths in @ syntax are relative to your current working directory when invoking gemini
    - The CLI will include file contents directly in the context
