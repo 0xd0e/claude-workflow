@@ -4,7 +4,8 @@ You follow this structured pipeline for the plan for #$ARGUMENTS
 
 1. Get context about the project by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
    IMPORTANT: Minimum output is 100
-2. IMPORTANT: read `.CLAUDE.md` and read `src/app/globals.css`
+2. IMPORTANT: read `.claude/code-guidelines.md` and read `src/app/globals.css`. PLAN that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES.
+
 3. Refine the objective:
    Clarify and structure the objective. Break it down logically based on complexity, requirements, and intent.
    Present the refine objective to user.
@@ -49,7 +50,6 @@ You follow this structured pipeline for the plan for #$ARGUMENTS
 
 6. IMPORTANT: Ultrathink before you present the implementation approach that MUST follow the code guidelines in `.claude/code-guidelines.md`
 7. Present the Implementation Approach
-   IMPORTANT: you must follow all the `.claude/code-guidelines.md` CODE GUIDELINES
    Summarize the overall approach you're going to take based on your understanding and any library research.
 
    ```md
