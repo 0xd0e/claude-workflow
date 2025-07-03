@@ -102,7 +102,7 @@ gemini -p <prompt>
 ```
 
 **Rate Limit Fallback:**
-If you encounter rate limits with the default model, use the this:
+If you encounter rate limits with the default model, use this:
 
 ```bash
 gemini -p <prompt> -m gemini-2.5-flash
