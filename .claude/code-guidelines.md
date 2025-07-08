@@ -1,63 +1,12 @@
 # IMPORTANT: CODE GUIDELINES
 
-## IMPORTANT: SSOT (Single Source of Truth) Architecture
-
-### IMPORTANT: CRITICAL HIERARCHY - NEVER VIOLATE
-
-```
-1. schemas/ → Validation + Types (Zod schemas are SSOT)
-2. config/  → Static constants only (non-validated) and environment variable
-3. types/   → Utility types only (not business domain)
-```
-
-### IMPORTANT: schemas/ - VALIDATION & TYPES SOURCE OF TRUTH
-
-All data validation and business domain types MUST originate from Zod schemas. Always use safeParse.
-
-```ts
-// schemas/user.ts - SSOT for User validation and types
-export const userSchema = z.object({
-  id: z.string().uuid(),
-  email: z.string().email(),
-  name: z.string().min(2).max(50),
-})
-
-export type User = z.infer<typeof userSchema>
-```
-
-### IMPORTANT: config/ - STATIC CONSTANTS and environment varibles ONLY
-
-Only non-validated, static constants and environment variables, NO business types.
-
-```ts
-// config/constants.ts
-export const UI_CONSTANTS = {
-  ITEMS_PER_PAGE: 10,
-  MAX_FILE_SIZE: 5000000,
-  SUPPORTED_FORMATS: ["jpg", "png", "pdf"],
-}
-export const SOLANA_RPC_URL = process.env.SOLANA_RPC_URL
-```
-
-### IMPORTANT: types/ - UTILITY TYPES ONLY
-
-Only TypeScript utility types and helpers. NO business domain types.
-
-```ts
-// types/utils.ts
-export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>
-export type DeepPartial<T> = { [P in keyof T]?: DeepPartial<T[P]> }
-```
-
-## IMPORTANT: Environment Variables
-
-IMPORTANT RULE: Centralize ALL environment variables MUST be placed in config.
+The code you produce will be production ready, no fallback and no unused code or migrate from old
 
 ## IMPORTANT: Code Style Guidelines
 
 ### 1. IMPORTANT: KISS (Keep It Simple, Stupid)
 
-Write clean, straightforward code. Return early to reduce nesting.
+Write clean, straightforward code. Return early to reduce nesting. Avoid using try catch, use return early instead.
 
 ```js
 const processUser = (user) => {
@@ -101,19 +50,12 @@ function createUser({ email, name }: { email: string; name: string }) {}
 
 IMPORTANT RULES:
 
-- NEVER use `any` - Use Zod schemas for validation and type inference
-- ALWAYS infer types from Zod schemas
-- NEVER define separate interfaces for business domains
-
-```ts
-export const userSchema = z.object({
-  id: z.string().uuid(),
-  email: z.string().email(),
-  name: z.string(),
-})
-
-export type User = z.infer<typeof userSchema>
-```
+- NEVER use `any`
+- Use Zod schemas for data that crosses boundaries (API requests/responses, form inputs, external data)
+- Use inline types for component props and TypeScript types for utility functions
+- Use inline types for component props, place shared/reusable types into `types/` folder
+- ALWAYS infer types from Zod schemas for boundary data
+- NEVER define separate interfaces for data that has Zod schemas
 
 ### IMPORTANT: 3. Imports
 
@@ -129,9 +71,12 @@ import { userSchema } from "@/schemas/user"
 
 - NO classes - Use functional patterns
 
-## IMPORTANT: Zod Schema Validation - MANDATORY RULES
+## IMPORTANT: Zod Schema Validation - Boundary Data Only
 
-IMPORTANT RULE: Zod schemas are the SINGLE SOURCE OF TRUTH for validation AND types.
+- Zod schemas are ONLY for data that crosses boundaries (API requests/responses, form inputs, external data)
+- Use inline types for component props and TypeScript types for utility functions
+- Zod schemas are the SINGLE SOURCE OF TRUTH for validation AND types for boundary data
+- Use zod `safeParse` instead of `parse`
 
 ### IMPORTANT: 1. Schema Organization
 
@@ -140,21 +85,21 @@ IMPORTANT RULE: Zod schemas are the SINGLE SOURCE OF TRUTH for validation AND ty
 ```bash
 src/
 ├── schemas/
-│   ├── user.ts          # User domain schemas
-│   ├── product.ts       # Product domain schemas
-│   └── api/             # API-specific schemas
+│   ├── user.ts          # User boundary data schemas (Zod only)
+│   ├── product.ts       # Product boundary data schemas (Zod only)
+│   └── api/             # API request/response schemas (Zod only)
 │       ├── user.ts      # User API request/response schemas
 │       └── auth.ts      # Auth API schemas
 ├── config/
-│   └── constants.ts     # Static constants only
+│   └── constants.ts     # Static constants only (TypeScript types)
 └── types/
-    └── utils.ts         # Utility types only (no business types)
+    └── utils.ts         # Shared/reusable utility types only (TypeScript types)
 ```
 
 ### IMPORTANT: Schema Definition Pattern
 
 ```ts
-// schemas/user.ts
+// schemas/user.ts (Boundary data only)
 export const userSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email(),
@@ -168,14 +113,54 @@ export const createUserSchema = userSchema.omit({
   createdAt: true,
 })
 
-// Types - ONLY inferred from schemas
+// Types - ONLY inferred from schemas for boundary data
 export type User = z.infer<typeof userSchema>
 export type CreateUser = z.infer<typeof createUserSchema>
 ```
 
-### 2. IMPORTANT: Validation Rules
+### IMPORTANT: TypeScript Types - Component Props vs Shared Types
 
-EVERY data input MUST be validated with Zod.
+```ts
+// types/utils.ts (Shared/reusable utility types only)
+export interface ApiResponse<T> {
+  data: T
+  status: number
+  message?: string
+}
+
+export interface PaginationOptions {
+  page: number
+  limit: number
+  sortBy?: string
+  sortOrder?: 'asc' | 'desc'
+}
+
+export type ComponentSize = 'sm' | 'md' | 'lg' | 'xl'
+export type Theme = 'light' | 'dark'
+```
+
+```ts
+// components/ui/Button.tsx (Use inline types for component props)
+export function Button({ 
+  variant = 'primary', 
+  size = 'md', 
+  disabled = false,
+  onClick,
+  children 
+}: {
+  variant?: 'primary' | 'secondary' | 'danger'
+  size?: ComponentSize  // Imported from types/utils.ts
+  disabled?: boolean
+  onClick?: () => void
+  children: React.ReactNode
+}) {
+  // Component implementation
+}
+```
+
+### IMPORTANT: Validation Rules - When to Use Zod vs TypeScript
+
+EVERY data input that crosses boundaries MUST be validated with Zod. Use inline types for component props and TypeScript types for utilities.
 
 ### IMPORTANT: Required Validation Points
 
@@ -278,12 +263,14 @@ export const apiUserResponseSchema = z.object({
 })
 ```
 
-## IMPORTANT: React Development Guidelines
+## IMPORTANT: React Development - Server Components First
+
 - Minimize the use of `'use client'`, `useEffect`, and `setState`; favor React Server Components (RSC) and Next.js SSR features.
 
 ### IMPORTANT: React useEffect Guidelines
 
 **NEVER use useEffect for:**
+
 - **Data transformation** - Calculate derived values during rendering: `const fullName = firstName + ' ' + lastName`
 - **Event handling** - Use event handlers directly, not Effects for user interactions
 - **State calculations** - Derive state from props/state during rendering rather than storing in state
@@ -294,6 +281,7 @@ export const apiUserResponseSchema = z.object({
 - **Inefficient computations** - Don't recalculate in Effects what can be computed directly
 
 **Use useEffect ONLY for:**
+
 - Synchronizing with external systems (APIs, DOM manipulation, third-party libraries)
 - Side effects that should run because the component was displayed
 - Fetching data on mount
@@ -301,12 +289,14 @@ export const apiUserResponseSchema = z.object({
 - Initializing app-wide configurations
 
 **Performance optimizations:**
+
 - **Calculate during rendering** for better performance than Effects
 - **Use `useMemo`** for expensive computations that need caching: `useMemo(() => getFilteredTodos(todos, filter), [todos, filter])`
 - **Use `key` prop** for component resets: `<Profile userId={userId} key={userId} />`
 - **Minimize state updates** in Effects to avoid unnecessary re-renders
 
 **Best practices:**
+
 - Keep components pure - avoid side effects in render
 - Lift state up when synchronization is needed between components
 - Use custom hooks for reusable Effect logic
@@ -328,18 +318,28 @@ IMPORTANT RULES:
 - Purpose: Encapsulate reusable stateful logic, especially for data fetching
 - Location: Place custom hooks in the `src/hooks/` directory
 - Naming: Use the `use` prefix (e.g., `useAccounts.ts`)
-- Data Fetching: Use fetch in Server Components for static or dynamic server-side data fetching to maximize performance and reduce client bundle size, and `useSWR` in Client Components when interactivity or client-side revalidation is needed.
+- Data Fetching: Use fetch in Server Components for static or dynamic server-side data fetching to maximize performance and reduce client bundle size, and `@tanstack/react-query` in Client Components when interactivity or client-side revalidation is needed.
 - Simplicity: Keep hooks focused on a single responsibility
 
 ```ts
 // hooks/useUserData.ts
-import useSWR from "swr"
+import { useQuery } from "@tanstack/react-query"
 import { User } from "@/schemas/user"
 
+const fetchUser = async (userId: string): Promise<User> => {
+  const response = await fetch(`/api/users/${userId}`)
+  if (!response.ok) {
+    throw new Error('Failed to fetch user')
+  }
+  return response.json()
+}
+
 export function useUserData(userId: string) {
-  const { data, error, isLoading } = useSWR<User>(
-    userId ? `/api/users/${userId}` : null
-  )
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => fetchUser(userId),
+    enabled: !!userId,
+  })
 
   return {
     user: data,
@@ -366,19 +366,28 @@ async function Page() {
 }
 ```
 
-### IMPORTANT: useSWR (Only When Interactivity Needed)
+### IMPORTANT: TanStack Query (Only When Interactivity Needed)
 
 USE ONLY IF: The component requires interactivity, client-side revalidation, or real-time updates.
 
 ```ts
 "use client"
 
-import useSWR from "swr"
+import { useQuery } from "@tanstack/react-query"
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
+const fetchUsers = async (): Promise<User[]> => {
+  const response = await fetch("/api/users?page=1")
+  if (!response.ok) {
+    throw new Error('Failed to fetch users')
+  }
+  return response.json()
+}
 
 export default function Users() {
-  const { data, error, isLoading } = useSWR("/api/users?page=1", fetcher)
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['users', 'page-1'],
+    queryFn: fetchUsers,
+  })
 
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error loading users</p>
@@ -387,7 +396,7 @@ export default function Users() {
 }
 ```
 
-## IMPORTANT: State Management - Zustand
+## IMPORTANT: State Management - Zustand for Client State
 
 Use Zustand for all client-side state management.
 
