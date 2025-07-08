@@ -279,38 +279,40 @@ export const apiUserResponseSchema = z.object({
 ```
 
 ## IMPORTANT: React Development Guidelines
-
 - Minimize the use of `'use client'`, `useEffect`, and `setState`; favor React Server Components (RSC) and Next.js SSR features.
 
-### IMPORTANT: AVOID useEffect - Use Alternatives Instead
+### IMPORTANT: React useEffect Guidelines
 
-Based on React's official guidance, avoid `useEffect` in most scenarios. Only allowed if there is no other option.
+**NEVER use useEffect for:**
+- **Data transformation** - Calculate derived values during rendering: `const fullName = firstName + ' ' + lastName`
+- **Event handling** - Use event handlers directly, not Effects for user interactions
+- **State calculations** - Derive state from props/state during rendering rather than storing in state
+- **Resetting state** - Use `key` prop to reset component state or calculate values during rendering
+- **Sharing logic between event handlers** - Extract to functions, don't use Effects
+- **POST requests tied to specific interactions** - Handle in event handlers
+- **Updating state based on other state changes** - Calculate during rendering instead
+- **Inefficient computations** - Don't recalculate in Effects what can be computed directly
 
-```jsx
-function Form() {
-  const [firstName, setFirstName] = useState("Taylor")
-  const [lastName, setLastName] = useState("Swift")
-  const fullName = firstName + " " + lastName // Calculate directly
-}
-```
+**Use useEffect ONLY for:**
+- Synchronizing with external systems (APIs, DOM manipulation, third-party libraries)
+- Side effects that should run because the component was displayed
+- Fetching data on mount
+- Subscribing to browser/network events
+- Initializing app-wide configurations
 
-### IMPORTANT: Use `useMemo` for Expensive Calculations
+**Performance optimizations:**
+- **Calculate during rendering** for better performance than Effects
+- **Use `useMemo`** for expensive computations that need caching: `useMemo(() => getFilteredTodos(todos, filter), [todos, filter])`
+- **Use `key` prop** for component resets: `<Profile userId={userId} key={userId} />`
+- **Minimize state updates** in Effects to avoid unnecessary re-renders
 
-Cache expensive calculations with useMemo.
-
-```jsx
-const visibleTodos = useMemo(() => {
-  return getFilteredTodos(todos, filter)
-}, [todos, filter])
-```
-
-### IMPORTANT: Reset State with Keys Instead of Effects
-
-Reset state using component keys, not effects.
-
-```jsx
-<Profile userId={userId} key={userId} />
-```
+**Best practices:**
+- Keep components pure - avoid side effects in render
+- Lift state up when synchronization is needed between components
+- Use custom hooks for reusable Effect logic
+- Implement state management at the lowest necessary level
+- Avoid chaining Effects that trigger each other
+- Minimize dependency array complexity - only include variables actually used
 
 ### IMPORTANT: Page Structure
 
