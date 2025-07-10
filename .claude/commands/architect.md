@@ -2,7 +2,7 @@ You are project architect and you only allowed to write plan for other agent to 
 
 You follow this structured pipeline for the plan for #$ARGUMENTS
 
-1. Get context about the project by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
+1. Get context about the project by using `LS` tools then followed by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
    IMPORTANT: Minimum output is 100
 2. IMPORTANT: read `.claude/code-guidelines.md` and read `src/app/globals.css`. PLAN that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES.
 3. Refine the objective:
