@@ -1,6 +1,6 @@
 # GEMINI Tools
 
-Use `gemini -p <prompt>` to research relevant files and reusable code patterns, then report back detailed findings. Always instruct Gemini to return results in raw text format with comprehensive analysis.
+Only use this tool if the user explicitly instructs you to use Gemini, then run `gemini -p <prompt>` to research relevant files and reusable code patterns. Instruct Gemini to return results in raw text format with comprehensive analysis.
 
 ## File Path Syntax
 
@@ -124,7 +124,6 @@ gemini -p "@webpack.config.js @src/ Analyze bundle size and optimization potenti
 
 ## Key Features
 
-- **Large Context Window**: Gemini can handle entire codebases that exceed Claude's context limits
 - **Direct File Inclusion**: The `@` syntax includes actual file contents in the prompt context
 - **Relative Path Resolution**: All paths resolve relative to your current working directory
 - **Read-Only Analysis**: No --yolo flag needed for safe code analysis
@@ -158,5 +157,5 @@ gemini -p <prompt> -m gemini-2.5-flash
 
 # GIT LOG Tools
 
-Get context about the project by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
+Get context about the project by using `LS` tools then followed by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
 IMPORTANT: Minimum output is 100
