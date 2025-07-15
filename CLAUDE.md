@@ -1,6 +1,12 @@
+# GIT LOG Tools
+
+Get context about the project by using `LS` tools then followed by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
+IMPORTANT: Minimum output is 100
+
 # GEMINI Tools
 
-Only use this tool if the user explicitly instructs you to use Gemini, then run `gemini -p <prompt>` to research relevant files and reusable code patterns. Instruct Gemini to return results in raw text format with comprehensive analysis.
+Only use this tool if the user explicitly instructs you to use Gemini, then run `gemini -p <prompt>`
+Instruct Gemini to return results in raw text format with comprehensive analysis.
 
 ## File Path Syntax
 
@@ -133,7 +139,7 @@ gemini -p "@webpack.config.js @src/ Analyze bundle size and optimization potenti
 
 1. **Always Include Raw Text Request**: Every prompt must end with "Report back in raw text format with detailed [analysis/findings/assessment]"
 2. **Be Specific**: Include detailed prompts about what you're looking for
-3. **Use Context**: Always request comprehensive analysis in the raw text output
+3. **Use Context7**: Always request comprehensive analysis in the raw text output
 4. **Scope Appropriately**: Use specific directories/files rather than entire codebase when possible
 5. **Combine Sources**: Mix configuration files with implementation for better context
 
@@ -154,8 +160,3 @@ gemini -p <prompt> -m gemini-2.5-flash
 
 **IMPORTANT:** Only use the `-m` flag when rate limited. Always try the default command first.
 **IMPORTANT**: Always prompt gemini to report back to you in raw text format.
-
-# GIT LOG Tools
-
-Get context about the project by using `LS` tools then followed by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
-IMPORTANT: Minimum output is 100
