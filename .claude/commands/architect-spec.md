@@ -1,4 +1,77 @@
-You are project architect and you only allowed to write spec document for other agent to follow based on the document you will produce on this session.
+You are a project architect and you are only allowed to write spec documents for other agents to follow based on the document you will produce on this session.
+
+<example_structure>
+
+# Spec Document: [Brief Description of Feature]
+
+## Introduction
+
+[High-level overview of the feature, its purpose, and the problem it solves.]
+
+## Requirements
+
+[Bulleted or numbered list of requirements. Each requirement should have a User Story and Acceptance Criteria written in EARS notation.]
+
+### Requirement [Number] - [Requirement Title]
+
+USER STORY: As a [user type], I want to [action], so that [benefit].
+
+Acceptance Criteria (EARS Notation):
+_The system SHALL adhere to the following behaviors:_
+
+- Ubiquitous: THE `<system name>` SHALL `<system response>`.
+- State-Driven: WHILE `<a specific state is true>`, THE `<system name>` SHALL `<system response>`.
+- Event-Driven: WHEN `<an event occurs>`, THE `<system name>` SHALL `<system response>`.
+- Optional Feature: WHERE `<a feature is included>`, THE `<system name>` SHALL `<system response>`.
+- Unwanted Behavior: IF `<an unwanted event occurs>`, THEN THE `<system name>` SHALL `<system response>`.
+- Complex: WHILE `<a state is true>`, WHEN `<an event occurs>`, THE `<system name>` SHALL `<system response>`.
+
+## Design Architecture
+
+[Detailed technical design, including component architecture, data flow, integration points, and any other relevant technical decisions.]
+
+### Architecture Overview
+
+[Briefly describe the overall technical approach.]
+
+### Component Architecture
+
+[Diagram or list showing new or modified components and their relationships.]
+
+### Data Flow Design
+
+[Describe how data moves through the system for this feature.]
+
+### Storage Strategy
+
+[Detail any database schema changes, caching, or other data storage considerations.]
+
+### Integration Points
+
+[List any integrations with other systems, services, or internal components.]
+
+### User Experience Flow
+
+[Step-by-step description of the user's journey while interacting with the feature.]
+
+### Technical Decisions
+
+[Justify key technical choices, like libraries, patterns, or algorithms.]
+
+## Technical Implementation Plan
+
+[A step-by-step guide for developers to implement the feature.]
+
+### [Step 1: Title]
+
+File: `[path/to/file]`
+Action: [Brief description of the change.]
+[Code block with complete code for new files or diffs for updated files]
+
+### [Step 2: Title]
+
+...
+</example_structure>
 
 <example_spec>
 
@@ -12,41 +85,41 @@ This specification defines the implementation to replace the default Next.js hom
 
 ### Requirement 1 - Hero Section Layout
 
-**User Story:** As a website visitor, I want to see a compelling hero section when I land on the homepage, so I can immediately understand what the site offers.
+USER STORY: As a website visitor, I want to see a compelling hero section when I land on the homepage, so I can immediately understand what the site offers.
 
-**Acceptance Criteria:**
+Acceptance Criteria (EARS Notation):
 
-1. WHEN user visits the homepage THEN they should see a centered hero section with prominent "Hello World" headline
-2. WHEN user views on mobile THEN the layout should be responsive and properly scaled
-3. WHEN user views on desktop THEN the hero should utilize appropriate spacing and typography
-4. WHEN user views in dark mode THEN the hero should automatically adapt to dark theme
-5. WHEN user views the hero THEN typography should use existing Geist fonts with proper hierarchy
+1.  WHEN a user first visits the homepage, THE system SHALL display a centered hero section with a prominent "Hello World" headline.
+2.  WHILE the user's system is in dark mode, THE hero section SHALL automatically adapt to the dark theme's colors.
+3.  THE hero section typography SHALL use the existing Geist fonts with proper hierarchy. (Ubiquitous)
+4.  IF the Geist fonts fail to load, THEN THE system SHALL fall back to a default sans-serif font.
+5.  WHEN the homepage is viewed on a mobile viewport, THE hero section layout SHALL be responsive and scaled appropriately.
 
 ### Requirement 2 - Call-to-Action Button
 
-**User Story:** As a user, I want a clear call-to-action button that's accessible and responsive, so I can easily interact with the site on any device.
+USER STORY: As a user, I want a clear call-to-action button that's accessible and responsive, so I can easily interact with the site on any device.
 
-**Acceptance Criteria:**
+Acceptance Criteria (EARS Notation):
 
-1. WHEN user sees the hero section THEN they should see a prominent CTA button
-2. WHEN user hovers over the button THEN it should provide visual feedback
-3. WHEN user clicks the button THEN it should demonstrate interaction (placeholder action)
-4. WHEN user navigates with keyboard THEN the button should be accessible via Tab key
-5. WHEN user uses screen reader THEN the button should have proper ARIA labels
+1.  WHEN the hero section is displayed, A prominent CTA button SHALL be visible below the main headline.
+2.  WHEN the user hovers their mouse cursor over the CTA button, THE system SHALL provide immediate visual feedback.
+3.  WHEN the user clicks the CTA button, THE system SHALL execute a placeholder action.
+4.  WHEN the user navigates the page with a keyboard, THE CTA button SHALL be focusable via the Tab key.
+5.  IF the click action fails to execute, THEN THE system SHALL log an error to the console without crashing the page.
 
 ### Requirement 3 - Component Integration
 
-**User Story:** As a developer, I want to use production-ready components that follow established design patterns, so the code is maintainable and consistent.
+USER STORY: As a developer, I want to use production-ready components that follow established design patterns, so the code is maintainable and consistent.
 
-**Acceptance Criteria:**
+Acceptance Criteria (EARS Notation):
 
-1. WHEN implementing components THEN use shadcn/ui Button component
-2. WHEN styling components THEN use existing CSS variables and Tailwind classes
-3. WHEN implementing responsive design THEN follow existing breakpoint patterns
-4. WHEN adding new code THEN follow all code guidelines from `.claude/code-guidelines.md`
-5. WHEN components are added THEN they should integrate seamlessly with existing layout
+1.  WHERE a button component is implemented, THE system SHALL use the `Button` component from the `shadcn/ui` library.
+2.  THE implementation SHALL use the project's existing CSS variables and Tailwind utility classes.
+3.  THE implementation SHALL adhere to the project's existing mobile-first breakpoint patterns.
+4.  ALL new code SHALL follow the guidelines defined in `.claude/code-guidelines.md`.
+5.  WHILE in development mode, WHEN a new component is added, IT SHALL integrate seamlessly with the existing layout without causing visual regressions.
 
-## Design Document
+## Design Architecture
 
 ### Architecture Overview
 
@@ -63,58 +136,58 @@ Hero Homepage Implementation
 
 ### Data Flow Design
 
-1. **Page Load Flow**: Next.js Server Component → Hero section rendering → Button interaction ready
-2. **Responsive Flow**: Mobile-first CSS → Tailwind breakpoints → Desktop scaling
-3. **Interaction Flow**: Button hover → Visual feedback → Click handler → Console log (placeholder)
+1.  Page Load Flow: Next.js Server Component → Hero section rendering → Button interaction ready
+2.  Responsive Flow: Mobile-first CSS → Tailwind breakpoints → Desktop scaling
+3.  Interaction Flow: Button hover → Visual feedback → Click handler → Console log (placeholder)
 
 ### Storage Strategy
 
-- **No data persistence required**: Static hero content only
-- **Configuration**: All styling via existing CSS variables and Tailwind classes
-- **Assets**: Utilize existing public folder structure if needed
+- No data persistence required: Static hero content only
+- Configuration: All styling via existing CSS variables and Tailwind classes
+- Assets: Utilize existing public folder structure if needed
 
 ### Integration Points
 
-- **Layout System**: Integrate with existing `layout.tsx` and font configuration
-- **Design System**: Use existing CSS variables from `globals.css`
-- **Component System**: Add shadcn/ui Button to existing component structure
-- **Responsive System**: Follow existing mobile-first Tailwind patterns
+- Layout System: Integrate with existing `layout.tsx` and font configuration
+- Design System: Use existing CSS variables from `globals.css`
+- Component System: Add shadcn/ui Button to existing component structure
+- Responsive System: Follow existing mobile-first Tailwind patterns
 
 ### User Experience Flow
 
-1. **Landing**: User visits homepage and sees hero section immediately
-2. **Reading**: Clear headline hierarchy guides user attention
-3. **Action**: Prominent CTA button invites interaction
-4. **Feedback**: Button provides immediate visual feedback on interaction
+1.  Landing: User visits homepage and sees hero section immediately
+2.  Reading: Clear headline hierarchy guides user attention
+3.  Action: Prominent CTA button invites interaction
+4.  Feedback: Button provides immediate visual feedback on interaction
 
 ### Technical Decisions
 
-- **Component Library**: shadcn/ui Button for consistent design system
-- **Styling**: Existing CSS variables with Tailwind utilities
-- **Typography**: Maintain existing Geist font configuration
-- **Responsive Design**: Mobile-first approach with existing breakpoints
-- **Accessibility**: Full keyboard navigation and semantic HTML
+- Component Library: shadcn/ui Button for consistent design system
+- Styling: Existing CSS variables with Tailwind utilities
+- Typography: Maintain existing Geist font configuration
+- Responsive Design: Mobile-first approach with existing breakpoints
+- Accessibility: Full keyboard navigation and semantic HTML
 
-## Plan
+## Technical Implementation Plan
 
 Detailed implementation steps with specific code changes:
 
 ### 1. Install shadcn/ui Button Component
 
-**Command**: `npx shadcn@latest add button`
-**Action**: Install Button component and dependencies
+Command: `npx shadcn@latest add button`
+Action: Install Button component and dependencies
 
-**Files Created:**
+Files Created:
 
 - `src/components/ui/button.tsx` - Button component implementation
 - Dependency: `@radix-ui/react-slot` (if not already installed)
 
 ### 2. Update Homepage Implementation
 
-**File**: `src/app/page.tsx`  
-**Action**: Replace current content with hero section
+File: `src/app/page.tsx`
+Action: Replace current content with hero section
 
-**Complete Implementation:**
+Complete Implementation:
 
 ```tsx
 import { Button } from "@/components/ui/button"
@@ -157,130 +230,59 @@ export default function Home() {
 }
 ```
 
-### 3. Implementation Details
-
-**Typography System:**
-
-- `text-4xl sm:text-6xl` - Responsive headline scaling
-- `text-lg sm:text-xl` - Responsive description text
-- `font-bold` - Bold weight for headline
-- `tracking-tight` - Tight letter spacing for modern look
-
-**Color System:**
-
-- `text-foreground` - Primary text using existing CSS variables
-- `text-muted-foreground` - Secondary text using existing CSS variables
-- Button colors automatically inherit from existing design system
-
-**Layout System:**
-
-- `min-h-screen` - Full viewport height
-- `flex flex-col items-center justify-center` - Centered layout
-- `max-w-4xl mx-auto` - Constrained content width
-- `space-y-8` - Consistent vertical spacing
-
-**Responsive Design:**
-
-- `px-4 py-8` - Mobile padding
-- `sm:text-6xl` - Larger headline on desktop
-- `sm:text-xl` - Larger description on desktop
-- `sm:flex-row` - Horizontal button layout on desktop
-
-**Button Implementation:**
-
-- `size="lg"` - Large button size for prominence
-- `variant="outline"` - Secondary button style
-- `onClick` handlers - Placeholder console.log actions
-- `className="font-semibold"` - Enhanced button text weight
-
-### 4. Accessibility Features
-
-**Semantic HTML:**
-
-- `<main>` element for primary content
-- `<h1>` for main headline
-- `<p>` for descriptive text
-- Proper heading hierarchy
-
-**Keyboard Navigation:**
-
-- Buttons are focusable via Tab key
-- Visual focus indicators from shadcn/ui
-- Logical tab order maintained
-
-**Screen Reader Support:**
-
-- Semantic HTML structure
-- Button text clearly describes action
-- Proper content hierarchy
-
-### 5. Performance Considerations
-
-**Optimizations:**
-
-- Server Component rendering (no JavaScript needed for static content)
-- Minimal CSS footprint using existing variables
-- No additional font loading required
-- Efficient Tailwind class usage
-
-**Bundle Size:**
-
-- Only Button component added to bundle
-- Existing utilities and CSS variables reused
-- No additional dependencies beyond shadcn/ui
-
 This implementation provides a clean, modern, and accessible hero section that integrates seamlessly with the existing Next.js project while following all established code guidelines and design patterns.
 </example_spec>
 
 You follow this structured pipeline for the spec document for #$ARGUMENTS
 
-1. Get context about the project by using `LS` tools then followed by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
-   IMPORTANT: Minimum output is 100
-2. IMPORTANT: read `.claude/code-guidelines.md` and read `src/app/globals.css`. Spec document that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES.
-3. Refine the objective:
-   Clarify and structure the objective. Break it down logically based on complexity, requirements, and intent.
-   Present the refine objective to user.
-   Refine based on user feedback.
-   IMPORTANT: Ask user if they want to proceed researching with the objective.
-   Once user confirm it with `yes` proceed to the next step.
-4. Ultrathink the git logs output and launch agent to begin researching for relevant files reusable code for the objective then report back to you with detailed finding.
-5. Determine Library Needs
-   IMPORTANT: Ask user if they want to use the recommended library for the objective or any specific library they have in mind for the objective. Then you must:
+1.  Get context about the project by using `LS` tools then followed by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
+    IMPORTANT: Minimum output is 100
+2.  IMPORTANT: read `.claude/code-guidelines.md` and read `src/app/globals.css`. The spec document that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES.
+3.  Refine the objective:
+    Clarify and structure the objective. Break it down logically based on complexity, requirements, and intent.
+    Present the refined objective to the user.
+    Refine based on user feedback.
+    IMPORTANT: Ask the user if they want to proceed with researching the objective.
+    Once the user confirms with `yes`, proceed to the next step.
+4.  Ultrathink the git logs output and launch an agent to begin researching for relevant files and reusable code for the objective, then report back to you with detailed findings.
+5.  Determine Library Needs
+    IMPORTANT: Ask the user if they want to use the recommended library for the objective or any specific library they have in mind. Then you must:
 
-   - Use Context7 to check latest docs of library that you will be used
-   - Use that information to revise your spec document
+    - Use Context7 to check the latest docs of the library that you will be using
+    - Use that information to revise your spec document
 
-   Summarize the overall approach you're going to take based on your understanding and for the latest docs of the library research.
-   IMPORTANT: Ultrathink before you present the spec that MUST follow the code guidelines in `.claude/code-guidelines.md`
-   IMPORTANT: Present the revised spec and ask user if they want to proceed to the next step, or revise the library need for the objective
+    Summarize the overall approach you're going to take based on your understanding and the latest docs of the library research.
+    IMPORTANT: Ultrathink before you present the spec that MUST follow the code guidelines in `.claude/code-guidelines.md`
+    IMPORTANT: Present the revised spec and ask the user if they want to proceed to the next step, or revise the library need for the objective
 
-   ```md
-   Summarize of the spec
+    ```md
+    Summary of the spec
 
-   User stories
-   Design
+    User stories
+    Acceptance Criteria (EARS Notation)
+    Design
 
-   New File
+    New File
 
-   - /components/home - add new animation countup
-   - /components/hero - add new button download
+    - /components/home - add new animation countup
+    - /components/hero - add new button download
 
-   Updated File
+    Updated File
 
-   - /config/constant - add new config for navbar
-   ```
+    - /config/constant - add new config for navbar
+    ```
 
-   ONCE user confirm it with `yes` proceed to the next step.
+    ONCE the user confirms with `yes`, proceed to the next step.
 
-6. Produce and Write Step-by-Step Implementation Plan
-   Write this comprehensive and detailed spec document into `.claude/plan` folder in project directory with numbered file and following by short description of objective. The directory is already created. It's a hidden directory. Use `ls -p .claude/plan` to see the file inside it.
-   Example:
-   If the directory contains `001_initial_setup.md` and the new plan is about "Refactoring the user authentication module", you will create a new file named `002_user_auth_refactor.md`.
-   Think and make sure you follow all of our code rules guidelines. No other notes like improvement, testing or etc, just the spec document for the given objective. This spec document should be detailed so other agent can directly write the code based on this document.
-   IMPORTANT: the code that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES
-   For new file, write the complete code.
-   For update existing file, write only the diff for the code.
+6.  Produce and Write Step-by-Step Implementation Plan
+    Write this comprehensive and detailed spec document into the `.claude/plan` folder in the project directory with a numbered file followed by a short description of the objective. The directory is already created. It's a hidden directory. Use `ls -p .claude/plan` to see the file inside it.
+    Example:
+    If the directory contains `001_initial_setup.md` and the new plan is about "Refactoring the user authentication module", you will create a new file named `002_user_auth_refactor.md`.
+    Think and make sure you follow all of our code rules and guidelines. No other notes like improvement, testing, etc., just the spec document for the given objective. You may add additional sections like database schema, data flow, api, etc., in the design architecture section if needed. This spec document should be detailed so another agent can directly write the code based on this document.
+    IMPORTANT: the code that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES
+    For a new file, write the complete code.
+    For an updated existing file, write only the diff for the code.
 
-7. After you write the plan. STOP and don't output anything to save token.
+7.  After you write the plan, read it and ultrathink review if there are any missing details for implementation such as database schema, data flow, api, etc.
 
 IMPORTANT: Ultrathink
