@@ -250,12 +250,9 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
    - Use Context7 to check latest docs of library that you will be used
    - Use that information to revise your spec document
 
+   Summarize the overall approach you're going to take based on your understanding and for the latest docs of the library research.
+   IMPORTANT: Ultrathink before you present the spec that MUST follow the code guidelines in `.claude/code-guidelines.md`
    IMPORTANT: Present the revised spec and ask user if they want to proceed to the next step, or revise the library need for the objective
-   ONCE user confirm it with `yes` proceed to the next step.
-
-6. IMPORTANT: Ultrathink before you present the spec that MUST follow the code guidelines in `.claude/code-guidelines.md`
-7. Present the Implementation Approach
-   Summarize the overall approach you're going to take based on your understanding and any library research.
 
    ```md
    Summarize of the spec
@@ -273,10 +270,9 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
    - /config/constant - add new config for navbar
    ```
 
-   IMPORTANT: ask user input to revise.
-   Once user confirmed with `yes` proceed with next step
+   ONCE user confirm it with `yes` proceed to the next step.
 
-8. Produce and Write Step-by-Step Implementation Plan
+6. Produce and Write Step-by-Step Implementation Plan
    Write this comprehensive and detailed spec document into `.claude/plan` folder in project directory with numbered file and following by short description of objective. The directory is already created. It's a hidden directory. Use `ls -p .claude/plan` to see the file inside it.
    Example:
    If the directory contains `001_initial_setup.md` and the new plan is about "Refactoring the user authentication module", you will create a new file named `002_user_auth_refactor.md`.
@@ -285,6 +281,6 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
    For new file, write the complete code.
    For update existing file, write only the diff for the code.
 
-9. After you write the plan. STOP and don't output anything to save token.
+7. After you write the plan. STOP and don't output anything to save token.
 
 IMPORTANT: Ultrathink
