@@ -102,45 +102,19 @@ interface PriceAlert {
   isActive: boolean
   createdAt: Date
 }
-// Complete context implementation with localStorage persistence
 ```
 
 ### 2. Add Alert Icon to Token Selector
 **File**: `apps/web/src/components/CurrencyInputPanel/index.tsx`  
 **Action**: Add bell icon button next to currency selector
 ```typescript
-// Add import for AlertModal
 import { AlertModal } from '../AlertModal'
 
-// Add bell icon button in currency selector section
 <Button variant="text" onClick={() => setShowAlert(true)}>
   <BellIcon />
 </Button>
 ```
 
-### 3. Create Alert Modal Component
-**File**: `apps/web/src/components/AlertModal/index.tsx`  
-**Action**: Create new modal component with form
-```typescript
-// Complete modal with price input, condition selector, and save functionality
-// Form validation and submission to AlertContext
-```
-
-### 4. Create Alert Dashboard Page
-**File**: `apps/web/src/pages/alerts/index.tsx`  
-**Action**: Create new page component
-```typescript
-// Alert list display with status indicators and delete functionality
-// Integration with AlertContext for data management
-```
-
-### 5. Add Price Monitoring Service
-**File**: `apps/web/src/services/priceAlertService.ts`  
-**Action**: Create new service for price monitoring
-```typescript
-// Service to check token prices and trigger notifications
-// Integration with existing price data sources
-```
 </example_spec>
 
 You follow this structured pipeline for the spec document for #$ARGUMENTS
@@ -159,17 +133,17 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
    IMPORTANT: Ask user if they want to use the recommended library for the objective or any specific library they have in mind for the objective. Then you must:
 
    - Use Context7 to check latest docs of library
-   - Use that information to revise your plan document
+   - Use that information to revise your spec document
 
-   IMPORTANT: Present the revised plan and ask user if they want to proceed to the next step, or revise the library need for the objective
+   IMPORTANT: Present the revised spec and ask user if they want to proceed to the next step, or revise the library need for the objective
    ONCE user confirm it with `yes` proceed to the next step.
 
-6. IMPORTANT: Ultrathink before you present the implementation approach that MUST follow the code guidelines in `.claude/code-guidelines.md`
+6. IMPORTANT: Ultrathink before you present the spec that MUST follow the code guidelines in `.claude/code-guidelines.md`
 7. Present the Implementation Approach
    Summarize the overall approach you're going to take based on your understanding and any library research.
 
    ```md
-   Summarize of the plan
+   Summarize of the spec
    New File
 
    - /components/home - add new animation countup
@@ -184,26 +158,13 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
    Once user confirmed with `yes` proceed with next step
 
 8. Produce and Write Step-by-Step Implementation Plan
-   Write this comprehensive and detailed plan into `.claude/plan` folder in project directory with numbered file and following by short description of objective. The directory is already created. It's a hidden directory. Use `ls -p .claude/plan` to see the file inside it.
+   Write this comprehensive and detailed spec document into `.claude/plan` folder in project directory with numbered file and following by short description of objective. The directory is already created. It's a hidden directory. Use `ls -p .claude/plan` to see the file inside it.
    Example:
    If the directory contains `001_initial_setup.md` and the new plan is about "Refactoring the user authentication module", you will create a new file named `002_user_auth_refactor.md`.
-   a sequential list of steps that you can follow to implement the objective. Think and make sure you follow all of our code rules guidelines. No other notes like improvement, testing or etc, just the plan for the code to implement for the given objective. This plan document should be detailed code so other agent can directly write the code based on this document.
+   Think and make sure you follow all of our code rules guidelines. No other notes like improvement, testing or etc, just the spec document for the given objective. This spec document should be detailed so other agent can directly write the code based on this document.
    IMPORTANT: the code that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES
    For new file, write the complete code.
    For update existing file, write only the diff for the code.
-   Example:
-
-   ```md
-   1. Description of todo 1
-      concise description
-      File path:
-      Code to change
-   2. Description of todo 2
-      concise decription
-      File path:
-      Code to change
-   3. And so on.
-   ```
 
 9. After you write the plan. STOP and don't output anything to save token.
 
