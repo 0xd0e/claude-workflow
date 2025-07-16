@@ -1,120 +1,235 @@
 You are project architect and you only allowed to write spec document for other agent to follow based on the document you will produce on this session.
 
 <example_spec>
-# Spec Document: Token Price Alert System
+
+# Spec Document: Hero Homepage Implementation
 
 ## Introduction
-This specification defines a token price alert system for PancakeSwap that allows users to set price alerts for tokens and receive notifications when price targets are reached.
+
+This specification defines the implementation to replace the default Next.js homepage with a simple, modern hero section featuring a "Hello World" message and call-to-action button using shadcn/ui components.
 
 ## Requirements
 
-### Requirement 1 - Alert Configuration
+### Requirement 1 - Hero Section Layout
 
-**User Story:** As a PancakeSwap user, I want to set price alerts for tokens, so that I can be notified when tokens reach my target prices.
-
-**Acceptance Criteria:**
-1. WHEN user is on the swap page THEN they should see a bell icon next to each token selector
-2. WHEN user clicks the bell icon THEN the alert configuration modal should open
-3. WHEN user enters a target price THEN the system should validate the input format
-4. WHEN user selects price condition (above/below) THEN the system should save the preference
-5. WHEN user saves the alert THEN the system should store it in localStorage with unique ID
-
-### Requirement 2 - Price Monitoring  
-
-**User Story:** As a system, I want to continuously monitor token prices against user alerts, so that I can trigger notifications when conditions are met.
+**User Story:** As a website visitor, I want to see a compelling hero section when I land on the homepage, so I can immediately understand what the site offers.
 
 **Acceptance Criteria:**
-1. WHEN a price alert is active THEN the system should check token prices every 30 seconds
-2. WHEN token price reaches target condition THEN the system should trigger notification
-3. WHEN notification is triggered THEN the system should send browser notification
-4. WHEN alert is triggered THEN the system should mark alert as completed
-5. WHEN price monitoring fails THEN the system should retry after 60 seconds
 
-### Requirement 3 - Alert Management
+1. WHEN user visits the homepage THEN they should see a centered hero section with prominent "Hello World" headline
+2. WHEN user views on mobile THEN the layout should be responsive and properly scaled
+3. WHEN user views on desktop THEN the hero should utilize appropriate spacing and typography
+4. WHEN user views in dark mode THEN the hero should automatically adapt to dark theme
+5. WHEN user views the hero THEN typography should use existing Geist fonts with proper hierarchy
 
-**User Story:** As a PancakeSwap user, I want to view and manage my active alerts, so that I can track and control my price notifications.
+### Requirement 2 - Call-to-Action Button
+
+**User Story:** As a user, I want a clear call-to-action button that's accessible and responsive, so I can easily interact with the site on any device.
 
 **Acceptance Criteria:**
-1. WHEN user visits /alerts page THEN they should see all active alerts
-2. WHEN user views alert list THEN each alert should show current price and status
-3. WHEN user clicks delete on alert THEN the system should remove it from storage
-4. WHEN user clicks notification THEN the system should navigate to swap page with token pre-selected
-5. WHEN user has no alerts THEN the system should show empty state message
+
+1. WHEN user sees the hero section THEN they should see a prominent CTA button
+2. WHEN user hovers over the button THEN it should provide visual feedback
+3. WHEN user clicks the button THEN it should demonstrate interaction (placeholder action)
+4. WHEN user navigates with keyboard THEN the button should be accessible via Tab key
+5. WHEN user uses screen reader THEN the button should have proper ARIA labels
+
+### Requirement 3 - Component Integration
+
+**User Story:** As a developer, I want to use production-ready components that follow established design patterns, so the code is maintainable and consistent.
+
+**Acceptance Criteria:**
+
+1. WHEN implementing components THEN use shadcn/ui Button component
+2. WHEN styling components THEN use existing CSS variables and Tailwind classes
+3. WHEN implementing responsive design THEN follow existing breakpoint patterns
+4. WHEN adding new code THEN follow all code guidelines from `.claude/code-guidelines.md`
+5. WHEN components are added THEN they should integrate seamlessly with existing layout
 
 ## Design Document
 
 ### Architecture Overview
-The token price alert system integrates into the existing PancakeSwap swap interface as a complementary feature. It follows a context-based state management pattern with persistent storage and background monitoring services.
+
+The hero homepage implementation replaces the current Next.js starter template with a clean, semantic hero section while maintaining the existing design system, typography, and responsive patterns.
 
 ### Component Architecture
+
 ```
-Token Price Alert System
-├── AlertContext (Global State Management)
-├── CurrencyInputPanel (Modified - adds alert button)
-├── AlertModal (New - configuration interface)
-├── AlertDashboard (New - management interface)
-└── PriceAlertService (New - monitoring service)
+Hero Homepage Implementation
+├── src/app/page.tsx (Modified - hero section)
+├── src/components/ui/button.tsx (New - shadcn/ui component)
+└── Existing layout.tsx (Unchanged - maintains fonts and metadata)
 ```
 
 ### Data Flow Design
-1. **Alert Creation Flow**: User interaction → Modal → Form validation → Context storage → localStorage persistence
-2. **Price Monitoring Flow**: Background service → Price API polling → Condition evaluation → Notification triggering
-3. **Alert Management Flow**: Dashboard interface → Context queries → CRUD operations → UI updates
+
+1. **Page Load Flow**: Next.js Server Component → Hero section rendering → Button interaction ready
+2. **Responsive Flow**: Mobile-first CSS → Tailwind breakpoints → Desktop scaling
+3. **Interaction Flow**: Button hover → Visual feedback → Click handler → Console log (placeholder)
 
 ### Storage Strategy
-- **Primary Storage**: localStorage for persistence across browser sessions
-- **Runtime Storage**: React Context for real-time state management
-- **Data Structure**: Normalized alert objects with unique IDs and timestamps
-- **Backup Strategy**: Version-controlled storage schema for future migrations
+
+- **No data persistence required**: Static hero content only
+- **Configuration**: All styling via existing CSS variables and Tailwind classes
+- **Assets**: Utilize existing public folder structure if needed
 
 ### Integration Points
-- **Swap Interface**: Alert button integrated into existing CurrencyInputPanel component
-- **Price Data**: Leverage existing price APIs and quote systems
-- **Notification System**: Browser Notification API with permission handling
-- **Routing**: Alert dashboard as new route in existing navigation structure
+
+- **Layout System**: Integrate with existing `layout.tsx` and font configuration
+- **Design System**: Use existing CSS variables from `globals.css`
+- **Component System**: Add shadcn/ui Button to existing component structure
+- **Responsive System**: Follow existing mobile-first Tailwind patterns
 
 ### User Experience Flow
-1. **Discovery**: User sees bell icon next to token selectors
-2. **Configuration**: Modal opens with current price context and simple form
-3. **Monitoring**: Background service tracks prices without user interaction
-4. **Notification**: Browser notification appears when conditions are met
-5. **Management**: Dashboard provides overview and control of all alerts
+
+1. **Landing**: User visits homepage and sees hero section immediately
+2. **Reading**: Clear headline hierarchy guides user attention
+3. **Action**: Prominent CTA button invites interaction
+4. **Feedback**: Button provides immediate visual feedback on interaction
 
 ### Technical Decisions
-- **State Management**: React Context for global alert state
-- **Persistence**: localStorage for offline capability
-- **Price Monitoring**: Polling-based approach with configurable intervals
-- **Notifications**: Browser Notification API with graceful fallback
-- **UI Integration**: Minimal impact on existing components
+
+- **Component Library**: shadcn/ui Button for consistent design system
+- **Styling**: Existing CSS variables with Tailwind utilities
+- **Typography**: Maintain existing Geist font configuration
+- **Responsive Design**: Mobile-first approach with existing breakpoints
+- **Accessibility**: Full keyboard navigation and semantic HTML
 
 ## Plan
+
 Detailed implementation steps with specific code changes:
 
-### 1. Create Alert Context and Storage
-**File**: `apps/web/src/contexts/AlertContext.tsx`  
-**Action**: Create new file with complete alert management system
-```typescript
-interface PriceAlert {
-  id: string
-  tokenAddress: string
-  targetPrice: number
-  condition: 'above' | 'below'
-  isActive: boolean
-  createdAt: Date
+### 1. Install shadcn/ui Button Component
+
+**Command**: `npx shadcn@latest add button`
+**Action**: Install Button component and dependencies
+
+**Files Created:**
+
+- `src/components/ui/button.tsx` - Button component implementation
+- Dependency: `@radix-ui/react-slot` (if not already installed)
+
+### 2. Update Homepage Implementation
+
+**File**: `src/app/page.tsx`  
+**Action**: Replace current content with hero section
+
+**Complete Implementation:**
+
+```tsx
+import { Button } from "@/components/ui/button"
+
+export default function Home() {
+  return (
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-8">
+      <div className="text-center max-w-4xl mx-auto space-y-8">
+        {/* Hero Headline */}
+        <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
+          Hello World
+        </h1>
+
+        {/* Hero Description */}
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto sm:text-xl">
+          Welcome to your new Next.js application with shadcn/ui components.
+          Start building something amazing today.
+        </p>
+
+        {/* Call-to-Action Button */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button
+            size="lg"
+            onClick={() => console.log("Get Started clicked")}
+            className="font-semibold"
+          >
+            Get Started
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => console.log("Learn More clicked")}
+          >
+            Learn More
+          </Button>
+        </div>
+      </div>
+    </main>
+  )
 }
 ```
 
-### 2. Add Alert Icon to Token Selector
-**File**: `apps/web/src/components/CurrencyInputPanel/index.tsx`  
-**Action**: Add bell icon button next to currency selector
-```typescript
-import { AlertModal } from '../AlertModal'
+### 3. Implementation Details
 
-<Button variant="text" onClick={() => setShowAlert(true)}>
-  <BellIcon />
-</Button>
-```
+**Typography System:**
 
+- `text-4xl sm:text-6xl` - Responsive headline scaling
+- `text-lg sm:text-xl` - Responsive description text
+- `font-bold` - Bold weight for headline
+- `tracking-tight` - Tight letter spacing for modern look
+
+**Color System:**
+
+- `text-foreground` - Primary text using existing CSS variables
+- `text-muted-foreground` - Secondary text using existing CSS variables
+- Button colors automatically inherit from existing design system
+
+**Layout System:**
+
+- `min-h-screen` - Full viewport height
+- `flex flex-col items-center justify-center` - Centered layout
+- `max-w-4xl mx-auto` - Constrained content width
+- `space-y-8` - Consistent vertical spacing
+
+**Responsive Design:**
+
+- `px-4 py-8` - Mobile padding
+- `sm:text-6xl` - Larger headline on desktop
+- `sm:text-xl` - Larger description on desktop
+- `sm:flex-row` - Horizontal button layout on desktop
+
+**Button Implementation:**
+
+- `size="lg"` - Large button size for prominence
+- `variant="outline"` - Secondary button style
+- `onClick` handlers - Placeholder console.log actions
+- `className="font-semibold"` - Enhanced button text weight
+
+### 4. Accessibility Features
+
+**Semantic HTML:**
+
+- `<main>` element for primary content
+- `<h1>` for main headline
+- `<p>` for descriptive text
+- Proper heading hierarchy
+
+**Keyboard Navigation:**
+
+- Buttons are focusable via Tab key
+- Visual focus indicators from shadcn/ui
+- Logical tab order maintained
+
+**Screen Reader Support:**
+
+- Semantic HTML structure
+- Button text clearly describes action
+- Proper content hierarchy
+
+### 5. Performance Considerations
+
+**Optimizations:**
+
+- Server Component rendering (no JavaScript needed for static content)
+- Minimal CSS footprint using existing variables
+- No additional font loading required
+- Efficient Tailwind class usage
+
+**Bundle Size:**
+
+- Only Button component added to bundle
+- Existing utilities and CSS variables reused
+- No additional dependencies beyond shadcn/ui
+
+This implementation provides a clean, modern, and accessible hero section that integrates seamlessly with the existing Next.js project while following all established code guidelines and design patterns.
 </example_spec>
 
 You follow this structured pipeline for the spec document for #$ARGUMENTS
@@ -132,7 +247,7 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
 5. Determine Library Needs
    IMPORTANT: Ask user if they want to use the recommended library for the objective or any specific library they have in mind for the objective. Then you must:
 
-   - Use Context7 to check latest docs of library
+   - Use Context7 to check latest docs of library that you will be used
    - Use that information to revise your spec document
 
    IMPORTANT: Present the revised spec and ask user if they want to proceed to the next step, or revise the library need for the objective
@@ -144,6 +259,10 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
 
    ```md
    Summarize of the spec
+
+   User stories
+   Design
+
    New File
 
    - /components/home - add new animation countup
