@@ -260,7 +260,7 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
 
     User stories
     Acceptance Criteria (EARS Notation)
-    Design
+    Summary of the Design
 
     New File
 
