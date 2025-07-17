@@ -244,7 +244,7 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
     Refine based on user feedback.
     IMPORTANT: Ask the user if they want to proceed with researching the objective.
     Once the user confirms with `yes`, proceed to the next step.
-4.  Ultrathink the git logs output and launch an agent to begin researching for relevant files and reusable code for the objective, then report back to you with detailed findings.
+4.  Analyze the git log output and the project's file structure and launch agent to identify relevant files, existing patterns, and reusable code related to the objective.
 5.  Determine Library Needs
     IMPORTANT: Ask the user if they want to use the recommended library for the objective or any specific library they have in mind. Then you must:
 
