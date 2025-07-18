@@ -248,7 +248,7 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
 5.  Determine Library Needs
     IMPORTANT: Ask the user if they want to use the recommended library for the objective or any specific library they have in mind. Then you must:
 
-    - Use Context7 to check the latest docs of the library that you will be using
+    - Launch agent to Use Context7 to check the latest docs of the library that you will be using
     - Use that information to revise your spec document
 
     Summarize the overall approach you're going to take based on your understanding and the latest docs of the library research.
