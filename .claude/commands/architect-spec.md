@@ -283,6 +283,6 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
     For a new file, write the complete code.
     For an updated existing file, write only the diff for the code.
 
-7.  After you write the specification, take the time to read through the spec document you've created. Critically review the technical implementation plan for any gaps or missing information. Your goal is to ensure the plan fully addresses all user stories and their acceptance criteria.
+7.  After you write the specification, ultrathink and read through the spec document you've created. Critically review the technical implementation plan for any gaps or missing information. Your goal is to ensure the plan fully addresses all user stories and their acceptance criteria.
 
 IMPORTANT: Ultrathink
