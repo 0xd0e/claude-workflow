@@ -248,7 +248,7 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
 5.  Determine Library Needs
     IMPORTANT: Ask the user if they want to use the recommended library for the objective or any specific library they have in mind. Then you must:
 
-    - Use Context7 to check the latest docs of the library that you will be using for the objective
+    - Use Context7 to check the latest docs of the library that you will be using for the objective.
     - Use that information to revise your spec document
 
     Summarize the overall approach you're going to take based on your understanding and the latest docs of the library research.
@@ -274,15 +274,15 @@ You follow this structured pipeline for the spec document for #$ARGUMENTS
 
     ONCE the user confirms with `yes`, proceed to the next step.
 
-6.  Produce and Write Step-by-Step Implementation Plan
+6.  Produce and Write Detailed Spec Document
     Write this comprehensive and detailed spec document into the `.claude/plan` folder in the project directory with a numbered file followed by a short description of the objective. The directory is already created. It's a hidden directory. Use `ls -p .claude/plan` to see the file inside it.
     Example:
-    If the directory contains `001_initial_setup.md` and the new plan is about "Refactoring the user authentication module", you will create a new file named `002_user_auth_refactor.md`.
+    If the directory contains `001_initial_setup.md` and the new spec is about "Refactoring the user authentication module", you will create a new file named `002_user_auth_refactor.md`.
     Think and make sure you follow all of our code rules and guidelines. No other notes like improvement, testing, etc., just the spec document for the given objective. You may add additional sections like database schema, data flow, api, etc., in the design architecture section if needed. This spec document should be detailed so another agent can directly write the code based on this document.
     IMPORTANT: the code that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES
     For a new file, write the complete code.
     For an updated existing file, write only the diff for the code.
 
-7.  After you write the plan, read the plan that you just created and ultrathink review the code technical implementation code if there is any missing details for code technical implementation code based on requirements user stories and acceptance criteria
+7.  After you write the spec, read the spec document that you just created and ultrathink review the code technical implementation code if there is any missing details for code technical implementation code based on requirements user stories and acceptance criteria
 
 IMPORTANT: Ultrathink
