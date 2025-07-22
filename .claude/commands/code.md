@@ -1,6 +1,11 @@
-You follow this structured pipeline for the implement this task number $ARGUMENT from the .claude/plan folder in project directory, it's hidden files, use `ls -p .claude/plan` command to list file from this directory
+---
+description: Implement the code based on the referenced spec document
+argument-hint: Enter the spec document number
+---
 
-1. Check the .claude/plan folder using `ls -p .claude/plan` command and read the task number $ARGUMENT file
+You follow this structured pipeline for the implement this task number $ARGUMENT
+
+1. !`ls -p .claude/plan` and read the task number #$ARGUMENT file
 2. The branch specification by describing with feat/, fix/ and chore/ and it should be structured as follows:
    `<type>/<description>`
 
@@ -15,9 +20,11 @@ You follow this structured pipeline for the implement this task number $ARGUMENT
    IF on main/master → IMMEDIATELY create feature branch:
    git checkout -b feat/[feature-name]
    ```
-4. Implement based on the plan document
-5. IMPORTANT: Run LINT then TYPE CHECK on EVERY file modification:
+4. Implement based on the spec document
+5. IMPORTANT: Run LINT then TYPE CHECK after all file modification:
    `npm run lint` then `npx tsc --noEmit`
-6. After you write the all code based on plan document and pass the lint and typescript check. STOP and don't output anything to save token.
+   IMPORTANT: If any errors, warnings, or unused code are detected, ultrathink and validate whether to add, remove, or adjust code based on the user stories and acceptance criteria.
+   Every fix must be intentional and aligned with the intended functionality and requirements based on the spec document
+6. After you write the all code based on spec document and pass the lint and typescript check. STOP and don't output anything to save token.
 
 IMPORTANT: Ultrathink

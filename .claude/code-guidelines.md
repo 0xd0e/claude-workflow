@@ -6,7 +6,7 @@ The code you produce will be production ready, no fallback and no unused code or
 
 ### 1. IMPORTANT: KISS (Keep It Simple, Stupid)
 
-Write clean, straightforward code. Return early to reduce nesting. Avoid using try catch, use return early instead.
+Write clean, straightforward code. Return early to reduce nesting. For general logic, prefer return early over try-catch. For TanStack Query functions and async operations, use throw/catch as required by the framework.
 
 ```js
 const processUser = (user) => {
@@ -52,7 +52,6 @@ IMPORTANT RULES:
 
 - NEVER use `any`
 - Use Zod schemas for data that crosses boundaries (API requests/responses, form inputs, external data)
-- Use inline types for component props and TypeScript types for utility functions
 - Use inline types for component props, place shared/reusable types into `types/` folder
 - ALWAYS infer types from Zod schemas for boundary data
 - NEVER define separate interfaces for data that has Zod schemas
@@ -78,24 +77,6 @@ import { userSchema } from "@/schemas/user"
 - Zod schemas are the SINGLE SOURCE OF TRUTH for validation AND types for boundary data
 - Use zod `safeParse` instead of `parse`
 
-### IMPORTANT: 1. Schema Organization
-
-### IMPORTANT: Correct File Structure
-
-```bash
-src/
-├── schemas/
-│   ├── user.ts          # User boundary data schemas (Zod only)
-│   ├── product.ts       # Product boundary data schemas (Zod only)
-│   └── api/             # API request/response schemas (Zod only)
-│       ├── user.ts      # User API request/response schemas
-│       └── auth.ts      # Auth API schemas
-├── config/
-│   └── constants.ts     # Static constants only (TypeScript types)
-└── types/
-    └── utils.ts         # Shared/reusable utility types only (TypeScript types)
-```
-
 ### IMPORTANT: Schema Definition Pattern
 
 ```ts
@@ -118,10 +99,24 @@ export type User = z.infer<typeof userSchema>
 export type CreateUser = z.infer<typeof createUserSchema>
 ```
 
-### IMPORTANT: TypeScript Types - Component Props vs Shared Types
+### IMPORTANT: TypeScript Type Organization
+
+**DECISION MATRIX:**
+
+1. **Boundary Data** → Use Zod schemas (API requests/responses, form inputs, external data)
+2. **Reusable Types** → Extract to `types/` folder when used across multiple components
+3. **Component Props** → Inline types for component-specific props
+
+### IMPORTANT: Import Pattern Standards
 
 ```ts
-// types/utils.ts (Shared/reusable utility types only)
+// Always use 'import type' for type-only imports
+import type { ReactNode } from "react"
+import type { ComponentSize } from "@/types/utils"
+```
+
+```ts
+// types/utils.ts (Shared/reusable types - let AI decide when to extract)
 export interface ApiResponse<T> {
   data: T
   status: number
@@ -132,31 +127,40 @@ export interface PaginationOptions {
   page: number
   limit: number
   sortBy?: string
-  sortOrder?: 'asc' | 'desc'
+  sortOrder?: "asc" | "desc"
 }
 
-export type ComponentSize = 'sm' | 'md' | 'lg' | 'xl'
-export type Theme = 'light' | 'dark'
+export type ComponentSize = "sm" | "md" | "lg" | "xl"
+export type Theme = "light" | "dark"
 ```
 
 ```ts
-// components/ui/Button.tsx (Use inline types for component props)
-export function Button({ 
-  variant = 'primary', 
-  size = 'md', 
+import type { ReactNode } from "react"
+import type { ComponentSize } from "@/types/utils"
+
+export function Button({
+  variant = "primary",
+  size = "md",
   disabled = false,
   onClick,
-  children 
+  children,
 }: {
-  variant?: 'primary' | 'secondary' | 'danger'
-  size?: ComponentSize  // Imported from types/utils.ts
+  variant?: "primary" | "secondary" | "danger"
+  size?: ComponentSize
   disabled?: boolean
   onClick?: () => void
-  children: React.ReactNode
+  children: ReactNode
 }) {
   // Component implementation
 }
 ```
+
+### IMPORTANT: General Guidelines
+
+- **Extract types when reused** across multiple components (AI should decide based on usage)
+- **Inline component-specific props** that aren't reused elsewhere
+- **Use Zod schemas** for all boundary data validation
+- **Use `import type`** for type-only imports to optimize bundle size
 
 ### IMPORTANT: Validation Rules - When to Use Zod vs TypeScript
 
@@ -181,7 +185,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { createUserSchema, type CreateUser } from "@/schemas/user"
 import { createUserAction } from "@/actions/user"
-import { toastError, toastSuccess } from "@/components/Toast"
+import { toast } from "sonner"
 
 export const UserForm = () => {
   const {
@@ -197,12 +201,11 @@ export const UserForm = () => {
     const result = await createUserAction(data)
 
     if (result?.serverError) {
-      toastError({
-        title: "Error creating user",
+      toast("Error creating user", {
         description: result.serverError,
       })
     } else {
-      toastSuccess({ description: "User created successfully!" })
+      toast("User created successfully!")
       // Handle success (redirect, reset form, etc.)
     }
   }
@@ -329,14 +332,14 @@ import { User } from "@/schemas/user"
 const fetchUser = async (userId: string): Promise<User> => {
   const response = await fetch(`/api/users/${userId}`)
   if (!response.ok) {
-    throw new Error('Failed to fetch user')
+    throw new Error('Network response was not ok')
   }
   return response.json()
 }
 
 export function useUserData(userId: string) {
   const { data, error, isLoading } = useQuery({
-    queryKey: ['user', userId],
+    queryKey: ["user", userId],
     queryFn: () => fetchUser(userId),
     enabled: !!userId,
   })
@@ -378,14 +381,14 @@ import { useQuery } from "@tanstack/react-query"
 const fetchUsers = async (): Promise<User[]> => {
   const response = await fetch("/api/users?page=1")
   if (!response.ok) {
-    throw new Error('Failed to fetch users')
+    throw new Error('Network response was not ok')
   }
   return response.json()
 }
 
 export default function Users() {
   const { data, error, isLoading } = useQuery({
-    queryKey: ['users', 'page-1'],
+    queryKey: ["users", "page-1"],
     queryFn: fetchUsers,
   })
 
@@ -398,7 +401,7 @@ export default function Users() {
 
 ## IMPORTANT: State Management - Zustand for Client State
 
-Use Zustand for all client-side state management.
+Use Zustand for client application state management (UI state, user preferences, etc.). Use TanStack Query for server state.
 
 ```ts
 // stores/useUserStore.ts
@@ -445,7 +448,6 @@ const selectedUser = useUserStore((state) => state.selectedUser)
   import groupBy from "lodash/groupBy"
   ```
 - Create utility functions in `src/utils/` folder for reusable logic
-- The `utils` folder also contains core app logic such as Next.js Server Actions and API requests
 
 ```ts
 import groupBy from "lodash/groupBy"
@@ -481,6 +483,7 @@ IMPORTANT: ALWAYS refer to `globals.css` for color definitions and variables. Us
 
 - Utility-first styling
 - Mobile first Responsive Design pattern using Tailwind breakpoints and flex layout
+- Avoid using `container` class in tailwindCSS
 - Avoid Arbitrary Values: Favor Tailwind's predefined scale values
 - Avoid custom CSS unless absolutely necessary
 - Spacing pattern favor use `space` and `gap`
@@ -549,7 +552,7 @@ Always use Shadcn UI components. Install with:
 npx shadcn@latest add [component-name]
 ```
 
-Components: `accordion, alert, alert-dialog, aspect-ratio, avatar, badge, breadcrumb, button, calendar, card, carousel, chart, checkbox, collapsible, combobox, command, context-menu, data-table, date-picker, dialog, drawer, dropdown-menu, hover-card, input, input-otp, label, menubar, navigation-menu, pagination, popover, progress, radio-group, resizable, scroll-area, select, separator, sheet, skeleton, slider, sonner, switch, tabs, table, textarea, toast, toggle, toggle-group, tooltip, typography`
+Components: `accordion, alert, alert-dialog, aspect-ratio, avatar, badge, breadcrumb, button, calendar, card, carousel, chart, checkbox, collapsible, combobox, command, context-menu, data-table, date-picker, dialog, drawer, dropdown-menu, hover-card, input, input-otp, label, menubar, navigation-menu, pagination, popover, progress, radio-group, resizable, scroll-area, select, separator, sheet, skeleton, slider, sonner, switch, tabs, table, textarea, toggle, toggle-group, tooltip, typography`
 
 ### prompt-kit
 
@@ -581,7 +584,7 @@ const users = [] // Will be populated from API
 
 ### Spacing System
 
-- 4-point increments: `p-4`, `p-8`, `p-12`
+- 4-point increments. Example: `space-x-4`, `space-y-4`, `space-x-8`, `space-y-8`, `space-x-12`, `space-y-12`
 - Semantic spacing: paragraph to headline, section to section
 - When in doubt, add space
 
@@ -674,8 +677,6 @@ const users = [] // Will be populated from API
 
 ## MCP Tools
 
-IMPORTANT RULES:
-
 - Use Supabase MCP for any task involving Supabase and database
 - Use browseruse MCP for frontend testing, browser logs, screenshots, visiting URLs
 - Use context7 to get the latest documentation of a library
@@ -693,23 +694,94 @@ IMPORTANT RULES:
 
 ```bash
 src/
-├── app/                        # Next.js App Router
-│   ├── api/                    # API routes
-│   └── (routes)/               # Page routes
-├── components/                 # React components
-│   └── ui/                     # Shadcn components
-│   └── PAGE_NAME/              # Page specific components
-│   └── shared-component.tsx    # Shared components
-├── schemas/                    # Zod schemas (SSOT for validation & types)
-│   ├── user.ts                 # User domain schemas
-│   └── api/                    # API-specific schemas
-├── config/                     # Static constants only
-├── types/                      # Utility types only (no business types)
-├── stores/                     # Zustand stores
-├── hooks/                      # Custom React hooks
-├── server-actions/             # Server Action Component
-├── utils/                      # Utility functions
-└── lib/                        # Third-party library configurations
+├── app/                          # Next.js App Router
+│   ├── globals.css              # Global styles
+│   ├── layout.tsx               # Root layout
+│   ├── page.tsx                 # Home page
+│   ├── (auth)/                  # Route group - auth pages
+│   │   ├── login/
+│   │   │   └── page.tsx         # /login
+│   │   ├── register/
+│   │   │   └── page.tsx         # /register
+│   │   └── layout.tsx           # Auth layout wrapper
+│   ├── (dashboard)/             # Route group - dashboard pages
+│   │   ├── dashboard/
+│   │   │   └── page.tsx         # /dashboard
+│   │   ├── settings/
+│   │   │   └── page.tsx         # /settings
+│   │   └── layout.tsx           # Dashboard layout wrapper
+│   ├── api/                     # API routes
+│   │   ├── auth/
+│   │   │   └── route.ts         # POST /api/auth
+│   │   ├── users/
+│   │   │   ├── route.ts         # GET/POST /api/users
+│   │   │   └── [id]/
+│   │   │       └── route.ts     # GET/PUT/DELETE /api/users/[id]
+│   │   └── products/
+│   │       └── route.ts         # API endpoints for products
+│   └── user-profile/
+│       └── page.tsx             # /user-profile
+├── components/                   # React components
+│   ├── ui/                      # Shadcn UI components
+│   │   ├── button.tsx           # Base button component
+│   │   ├── card.tsx             # Base card component
+│   │   ├── input.tsx            # Base input component
+│   │   └── dialog.tsx           # Base dialog component
+│   ├── auth/                    # Auth-specific components
+│   │   ├── LoginForm.tsx        # Login form component
+│   │   ├── RegisterForm.tsx     # Registration form
+│   │   └── AuthProvider.tsx     # Auth context provider
+│   ├── dashboard/               # Dashboard-specific components
+│   │   ├── Sidebar.tsx          # Dashboard sidebar
+│   │   ├── Header.tsx           # Dashboard header
+│   │   └── StatsCard.tsx        # Statistics card component
+│   ├── user-profile/            # User profile page components
+│   │   ├── ProfileForm.tsx      # User profile edit form
+│   │   └── AvatarUpload.tsx     # Avatar upload component
+│   ├── shared/                  # Shared/common components
+│   │   ├── LoadingSpinner.tsx   # Loading state component
+│   │   ├── ErrorBoundary.tsx    # Error boundary wrapper
+│   │   └── Navigation.tsx       # Main navigation component
+│   └── providers/               # React context providers
+│       ├── QueryProvider.tsx    # TanStack Query provider
+│       └── ThemeProvider.tsx    # Theme context provider
+├── schemas/                     # Zod schemas (SSOT for validation & types)
+│   ├── user.ts                  # User boundary data schemas
+│   ├── product.ts               # Product boundary data schemas
+│   └── api/                     # API request/response schemas
+│       ├── auth.ts              # Auth API schemas
+│       ├── users.ts             # User API request/response schemas
+│       └── products.ts          # Product API schemas
+├── config/                      # Static constants and configuration
+│   ├── constants.ts             # App constants
+│   ├── database.ts              # Database configuration
+│   └── env.ts                   # Environment variables validation
+├── types/                       # Shared types only (no cross boundary validation types)
+│   ├── utils.ts                 # Shared utility types
+│   ├── api.ts                   # Generic API response types
+│   └── components.ts            # Common component prop types
+├── stores/                      # Zustand stores for client state
+│   ├── useAuthStore.ts          # Authentication state
+│   ├── useUserStore.ts          # User management state
+│   └── useThemeStore.ts         # Theme/UI state
+├── hooks/                       # Custom React hooks
+│   ├── useAuth.ts               # Authentication hooks
+│   ├── useLocalStorage.ts       # Local storage hook
+│   └── useDebounce.ts           # Debounce utility hook
+├── server-actions/              # Next.js Server Actions
+│   ├── auth.ts                  # Authentication actions
+│   ├── users.ts                 # User management actions
+│   └── products.ts              # Product management actions
+├── utils/                       # Utility functions and helpers
+│   ├── validation.ts            # Validation utilities
+│   ├── formatters.ts            # Data formatting utilities
+│   ├── api.ts                   # API request utilities
+│   └── date.ts                  # Date manipulation utilities
+└── lib/                         # Third-party library configurations
+    ├── supabase.ts              # Supabase client setup
+    ├── prisma.ts                # Prisma client setup
+    ├── auth.ts                  # Auth.js configuration
+    └── utils.ts                 # Utility functions (cn, etc.)
 ```
 
 ## IMPORTANT: General Principles
@@ -743,4 +815,4 @@ The commit message should be structured as follows:
 
 [optional footer]
 
-## IMPORTANT: You MUST use `ast-grep` command for a search that requires syntax-aware or structural matching, default to `ast-grep --lang rust -p 'searchpattern'` (or set `--lang` appropriately) and avoid falling back to text-only tools like `rg` or `grep` unless user explicitly request a plain-text search.
+## IMPORTANT: You MUST use `ast-grep` command for a search that requires syntax-aware or structural matching, default to `ast-grep --lang typescript -p 'searchpattern'` (or set `--lang` appropriately) and avoid falling back to text-only tools like `rg` or `grep` unless user explicitly request a plain-text search.

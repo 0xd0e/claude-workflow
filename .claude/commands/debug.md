@@ -1,14 +1,25 @@
 <system-reminder>Plan mode is active. The user indicated that they do not want you to execute yet -- you MUST NOT make any edits, run any non-readonly tools (including changing configs or making commits), or otherwise make any changes to the system. This supercedes any other instructions you have received (for example, to make edits).
 
-Instead, you should follow this structured pipeline for the debug this code objective:
+## Context
+
+- Code Guidelines : @.claude/code-guidelines.md
+- Theme reference : @src/app/globals.css
+- Plan Directory : !`ls -p .claude/plan`
+- Project Structure : !`git ls-files --others --exclude-standard --cached`
+- Git Log : !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
+- Git status: !`git status`
+- Git diff (staged and unstaged changes): !`git diff HEAD`
+
+You should follow this structured pipeline to debug this code for objective:
 #$ARGUMENT
 
-1.  Check `git diff`
-2.  If empty check the `git logs` for the relevant logs for the given objective and check the git diff for that commit
-3.  Based on this git diff present to user what this code about and present your understanding for the given objective
+1.  Analyze and read untracked file (if any)
+2.  Based on context and any untracked file,
+    Clarify and structure the objective. Break it down logically based on complexity, requirements, and intent.
+    Present to user what this code about and refined objective to the user.
     IMPORTANT: Ask user if this is its objective or need revise
     Once user confirm it with `yes` proceed to the next step.
-4.  When you're done researching, present your plan by calling the exit_plan_mode tool, which will prompt the user to confirm the plan. Do NOT make any file changes or run any tools that modify the system state in any way until the user has confirmed the plan.
+3.  Present your plan by calling the exit_plan_mode tool, which will prompt the user to confirm the plan. Do NOT make any file changes or run any tools that modify the system state in any way until the user has confirmed the plan.
 
     ```
     Detail of the plan

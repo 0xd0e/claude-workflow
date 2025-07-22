@@ -1,3 +1,7 @@
+---
+description: Create a spec document with gemini
+---
+
 # GEMINI Tools
 
 Only use this tool if the user explicitly instructs you to use Gemini, then run `gemini -p <prompt>`
@@ -156,97 +160,70 @@ gemini -p <prompt> -m gemini-2.5-flash
 **IMPORTANT:** Only use the `-m` flag when rate limited. Always try the default command first.
 **IMPORTANT**: Always prompt gemini to report back to you in raw text format.
 
-You are project architect and you only allowed to write plan for other agent to follow based on the document you will produce on this session.
+# Architect Gemini Workflow
 
-You follow this structured pipeline for the plan for #$ARGUMENTS
+You are a project architect and you are only allowed to write spec documents for other agents to follow based on the document you will produce on this session.
 
-1. Get context about the project by using `LS` tools then followed by executing this command `git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
-   IMPORTANT: Minimum output is 100
-2. IMPORTANT: read `.claude/code-guidelines.md` and read `src/app/globals.css`. PLAN that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES.
+## Context
 
-3. Refine the objective:
-   Clarify and structure the objective. Break it down logically based on complexity, requirements, and intent.
-   Present the refine objective to user.
-   Refine based on user feedback.
-   IMPORTANT: Ask user if they want to revise the objective or proceed to the next step.
-   Once user confirm it with `yes` proceed to the next step.
-4. Ultrathink the git logs output and IMPORTANT: Use `gemini -p <prompt>` to begin researching for relevant files reusable code for the objective then report back to you with detailed finding. Restrict the gemini to only read and report it back to you in raw text format with detailed prompt. Use the `@` syntax to include files and directories in your Gemini prompts. The paths should be relative to WHERE you run the gemini command:
-   Examples:
+- Example Spec : @.claude/plan/000_example_spec.md
+- Code Guidelines : @.claude/code-guidelines.md
+- Theme reference : @src/app/globals.css
+- Plan Directory : !`ls -p .claude/plan`
+- Project Structure : !`git ls-files --others --exclude-standard --cached`
+- Git Log : !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
 
-   **Single file analysis:**
-   `gemini -p "@src/main.py <prompt>"`
+## Workflow
 
-   Multiple files:
-   `gemini -p "@package.json @src/index.js <prompt>"`
+You follow this structured pipeline to create a spec document for #$ARGUMENTS
 
-   Entire directory:
-   `gemini -p "@src/ <prompt>"`
+1.  Refine the objective:
+    Clarify and structure the objective. Break it down logically based on complexity, requirements, and intent.
+    Present the refined objective to the user.
+    Refine based on user feedback.
+    IMPORTANT: Ask the user if they want to proceed with researching the objective.
+    Once the user confirms with `yes`, proceed to the next step.
+2.  Analyze the context. Use `gemini` to identify relevant files, existing code patterns, integration points, and reusable components that align with the objective, emphasizing opportunities to eliminate duplication and follow DRY (Don't Repeat Yourself) principles. Then report back with detailed findings. Restrict the `gemini` to only read files and report it back to you in raw text format with detailed prompt.
 
-   Multiple directories:
-   `gemini -p "@src/ @tests/ <prompt>"`
+3.  Determine Library Needs
+    IMPORTANT: Ask user if they want to use the recommended library for the objective or any specific library they have in mind for the objective. Then you must:
 
-   Current directory and subdirectories:
-   `gemini -p "@./ <prompt>"`
+    - Use `gemini -p <prompt>` to check latest docs of library. Use context7 in prompt. Prompt is detailed as possible and report it back to you in raw text format with detailed prompt.
+    - Use that information to revise your spec document.
 
-   Or use --all_files flag:
-   `gemini --all_files -p "<prompt>"`
+    Summarize the overall approach you're going to take based on your understanding and the latest docs of the library research.
+    IMPORTANT: Ultrathink before you present the spec that MUST follow the code guidelines
+    IMPORTANT: Present the revised spec and ask the user if they want to proceed to the next step, or revise the library need for the objective
 
-   - Paths in @ syntax are relative to your current working directory when invoking gemini
-   - The CLI will include file contents directly in the context
-   - No need for --yolo flag for read-only analysis
-   - Gemini's context window can handle entire codebases that would overflow Claude's context
-   - When checking implementations, be specific about what you're looking for to get accurate results
+    ```md
+    Summary of the spec
 
-5. Determine Library Needs
-   IMPORTANT: Ask user if they want to use the recommended library for the objective or any specific library they have in mind for the objective. Then you must:
+    User stories
+    Acceptance Criteria (EARS Notation)
+    Summary of the Design
 
-   - Use `gemini -p <prompt>` to check latest docs of library. Use context7 in prompt. Prompt is detailed as possible and report it back to you in raw text format with detailed prompt.
-   - Use that information to revise your plan.
+    New File
 
-   IMPORTANT: Present the revised plan and ask user if they want to proceed to the next step, or revise the library need for the objective
-   ONCE user confirm it with `yes` proceed to the next step.
+    - /components/home - add new animation countup
+    - /components/hero - add new button download
 
-6. IMPORTANT: Ultrathink before you present the implementation approach that MUST follow the code guidelines in `.claude/code-guidelines.md`
-7. Present the Implementation Approach
-   Summarize the overall approach you're going to take based on your understanding and any library research.
+    Updated File
 
-   ```md
-   Summarize of the plan
-   New File
+    - /config/constant - add new config for navbar
+    ```
 
-   - /components/home - add new animation countup
-   - /components/hero - add new button download
+    ONCE the user confirms with `yes`, proceed to the next step.
 
-   Updated File
+4.  Produce and Write Detailed Spec Document
 
-   - /config/constant - add new config for navbar
-   ```
+    Write this comprehensive and detailed spec document into the `.claude/plan` folder in the project directory with a numbered file followed by a short description of the objective. The directory is already created. It's a hidden directory.
+    Example:
+    If the directory contains `001_initial_setup.md` and the new spec is about "Refactoring the user authentication module", you will create a new file named `002_user_auth_refactor.md`.
+    Think and make sure you follow all of our code rules and guidelines. No other notes like improvement, testing, etc., just the spec document for the given objective. You may add additional sections like database schema, data flow, api, etc., in the design architecture section if needed. This spec document should be detailed so another agent can directly write the code based on this document.
+    IMPORTANT: the code that you produce must follow all the CODE GUIDELINES and Theme reference
+    For a new file, write the complete code.
+    For an updated existing file, write only the diff for the code.
 
-   IMPORTANT: ask user input to revise.
-   Once user confirmed with `yes` proceed with next step
-
-8. Produce and Write Step-by-Step Implementation Plan
-   Write this comprehensive and detailed plan into `.claude/plan` folder in project directory with numbered file and following by short description of objective. The directory is already created. It's a hidden directory. Use `ls -p .claude/plan` to see the file inside it.
-   Example:
-   If the directory contains `001_initial_setup.md` and the new plan is about "Refactoring the user authentication module", you will create a new file named `002_user_auth_refactor.md`.
-   a sequential list of steps that you can follow to implement the objective. Think and make sure you follow all of our code rules guidelines. No other notes like improvement, testing or etc, just the plan for the code to implement for the given objective. This plan document should be detailed code so other agent can directly write the code based on this document.
-   IMPORTANT: the code that you produce must follow all the `.claude/code-guidelines.md` CODE GUIDELINES
-   For new file, write the complete code.
-   For update existing file, write only the diff for the code.
-   Example:
-
-   ```md
-   1. Description of todo 1
-      concise description
-      File path:
-      Code to change
-   2. Description of todo 2
-      concise decription
-      File path:
-      Code to change
-   3. And so on.
-   ```
-
-9. After you write the plan. STOP and don't output anything to save token.
+5.  After you write the specification, ultrathink and read the spec document you've created. Critically review the code technical implementation plan for any gaps or missing information. Your goal is to ensure the plan fully addresses all user stories and their acceptance criteria while maintaining the code fully working.
 
 IMPORTANT: Ultrathink

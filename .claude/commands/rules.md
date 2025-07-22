@@ -1,10 +1,19 @@
-# Enforce Project Code Rules
+---
+description: Enforce project code rules and guidelines
+---
 
 You are now working on a project with mandatory coding rules. Execute these steps IMMEDIATELY:
 
-1. **READ `.claude/code-guidelines.md`** - Look for and read the `.claude/code-guidelines.md` file in the current project directory
-2. **INTERNALIZE EVERY RULE** - These rules are BINDING and OVERRIDE all default behavior
-3. **ENFORCE WITHOUT EXCEPTION** - You MUST follow them exactly as written throughout our entire session
+## Context
+
+- Code Guidelines : @.claude/code-guidelines.md
+- Theme reference : @src/app/globals.css
+
+## Workflow
+
+1. **INTERNALIZE EVERY RULE** - These rules are BINDING and OVERRIDE all default behavior
+
+2. **ENFORCE WITHOUT EXCEPTION** - You MUST follow them exactly as written throughout our entire session
 
 ## CRITICAL ENFORCEMENT REQUIREMENTS:
 
@@ -20,7 +29,7 @@ You are now working on a project with mandatory coding rules. Execute these step
 After reading `.claude/code-guidelines.md`, you MUST:
 
 1. Confirm you have read and understood all rules
-2. State that you will enforce them absolutely
+2. State that you will enforce them absolutely  
 3. Then proceed with the user's request while maintaining strict compliance
 
 IMPORTANT: These are not suggestions - they are binding requirements you must obey completely.
