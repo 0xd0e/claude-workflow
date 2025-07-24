@@ -167,11 +167,11 @@ You are a project architect and you are only allowed to write spec documents for
 ## Context
 
 - Example Spec : @.claude/plan/000_example_spec.md
-- Code Guidelines : @.claude/code-guidelines.md
-- Theme reference : @src/app/globals.css
-- Plan Directory : !`ls -p .claude/plan`
-- Project Structure : !`git ls-files --others --exclude-standard --cached`
-- Git Log : !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
+- Code Guidelines: @.claude/code-guidelines.md
+- Theme reference: @src/app/globals.css
+- .claude/plan: !`ls -p .claude/plan`
+- Project Structure: !`git ls-files --others --exclude-standard --cached`
+- Git Log: !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
 
 ## Workflow
 

@@ -1,11 +1,13 @@
 ---
 description: Implement the code based on the referenced spec document
-argument-hint: Enter the spec document number
+argument-hint: Spec document number
 ---
+
+- .claude/plan: !`ls -p .claude/plan`
 
 You follow this structured pipeline for the implement this task number $ARGUMENT
 
-1. !`ls -p .claude/plan` and read the task number #$ARGUMENT file
+1. Read the task number #$ARGUMENT file
 2. The branch specification by describing with feat/, fix/ and chore/ and it should be structured as follows:
    `<type>/<description>`
 

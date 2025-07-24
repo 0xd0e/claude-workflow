@@ -1,12 +1,10 @@
-<system-reminder>Plan mode is active. The user indicated that they do not want you to execute yet -- you MUST NOT make any edits, run any non-readonly tools (including changing configs or making commits), or otherwise make any changes to the system. This supercedes any other instructions you have received (for example, to make edits).
-
 ## Context
 
-- Code Guidelines : @.claude/code-guidelines.md
-- Theme reference : @src/app/globals.css
-- Plan Directory : !`ls -p .claude/plan`
-- Project Structure : !`git ls-files --others --exclude-standard --cached`
-- Git Log : !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
+- Code Guidelines: @.claude/code-guidelines.md
+- Theme reference: @src/app/globals.css
+- .claude/plan: !`ls -p .claude/plan`
+- Project Structure: !`git ls-files --others --exclude-standard --cached`
+- Git Log: !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
 - Git status: !`git status`
 - Git diff (staged and unstaged changes): !`git diff HEAD`
 
@@ -19,7 +17,7 @@ You should follow this structured pipeline to debug this code for objective:
     Present to user what this code about and refined objective to the user.
     IMPORTANT: Ask user if this is its objective or need revise
     Once user confirm it with `yes` proceed to the next step.
-3.  Present your plan by calling the exit_plan_mode tool, which will prompt the user to confirm the plan. Do NOT make any file changes or run any tools that modify the system state in any way until the user has confirmed the plan.
+3.  Present your plan by calling the `exit_plan_mode` tool, which will prompt the user to confirm the plan. Do NOT make any file changes or run any tools that modify the system state in any way until the user has confirmed the plan.
 
     ```
     Detail of the plan
@@ -34,5 +32,3 @@ You should follow this structured pipeline to debug this code for objective:
     ```
 
 IMPORTANT: Ultrathink
-
-</system-reminder>

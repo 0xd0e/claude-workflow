@@ -6,12 +6,12 @@ You are a project architect and you are only allowed to write spec documents for
 
 ## Context
 
-- Example Spec : @.claude/plan/000_example_spec.md
-- Code Guidelines : @.claude/code-guidelines.md
-- Theme reference : @src/app/globals.css
-- Plan Directory : !`ls -p .claude/plan`
-- Project Structure : !`git ls-files --others --exclude-standard --cached`
-- Git Log : !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
+- Example Spec: @.claude/plan/000_example_spec.md
+- Code Guidelines: @.claude/code-guidelines.md
+- Theme reference: @src/app/globals.css
+- .claude/plan: !`ls -p .claude/plan`
+- Project Structure: !`git ls-files --others --exclude-standard --cached`
+- Git Log: !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
 
 ## Workflow
 
@@ -23,7 +23,7 @@ You follow this structured pipeline to create a spec document for #$ARGUMENTS
     Refine based on user feedback.
     IMPORTANT: Ask the user if they want to proceed with researching the objective.
     Once the user confirms with `yes`, proceed to the next step.
-2.  Analyze the context. Launch an agent to identify relevant files, existing code patterns, integration points, and reusable components that align with the objective, emphasizing opportunities to eliminate duplication and follow DRY (Don't Repeat Yourself) principles. Then report back with detailed findings.
+2.  Analyze the context. Leverage all tols except TASK tool to identify relevant files, existing code patterns, integration points, and reusable components that align with the objective, emphasizing opportunities to eliminate duplication and follow DRY (Don't Repeat Yourself) principles. Then report back with detailed findings.
 3.  Determine Library Needs
     IMPORTANT: Ask the user if they want to use the recommended library for the objective or any specific library they have in mind. Then you must:
 
@@ -32,7 +32,7 @@ You follow this structured pipeline to create a spec document for #$ARGUMENTS
 
     Summarize the overall approach you're going to take based on your understanding and the latest docs of the library research.
     IMPORTANT: Ultrathink before you present the spec that MUST follow the code guidelines
-    IMPORTANT: Present the revised spec and ask the user if they want to proceed to the next step, or revise the library need for the objective
+    IMPORTANT: Use `exit_plan_mode` to present the revised spec and ask the user if they want to proceed to the next step, or revise the library need for the objective
 
     ```md
     Summary of the spec
@@ -63,6 +63,6 @@ You follow this structured pipeline to create a spec document for #$ARGUMENTS
     For a new file, write the complete code.
     For an updated existing file, write only the diff for the code.
 
-5.  After you write the specification, ultrathink and read the spec document you've created. Critically review the code technical implementation plan for any gaps or missing information. Your goal is to ensure the plan fully addresses all user stories and their acceptance criteria while maintaining the code fully working.
+5.  After you write the specification, STOP and don't output anything to save token.
 
 IMPORTANT: Ultrathink

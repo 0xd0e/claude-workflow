@@ -332,7 +332,7 @@ import { User } from "@/schemas/user"
 const fetchUser = async (userId: string): Promise<User> => {
   const response = await fetch(`/api/users/${userId}`)
   if (!response.ok) {
-    throw new Error('Network response was not ok')
+    throw new Error("Network response was not ok")
   }
   return response.json()
 }
@@ -381,7 +381,7 @@ import { useQuery } from "@tanstack/react-query"
 const fetchUsers = async (): Promise<User[]> => {
   const response = await fetch("/api/users?page=1")
   if (!response.ok) {
-    throw new Error('Network response was not ok')
+    throw new Error("Network response was not ok")
   }
   return response.json()
 }
@@ -755,7 +755,7 @@ src/
 ├── config/                      # Static constants and configuration
 │   ├── constants.ts             # App constants
 │   ├── database.ts              # Database configuration
-│   └── env.ts                   # Environment variables validation
+│   └── env.ts                   # Centralize environment variable
 ├── types/                       # Shared types only (no cross boundary validation types)
 │   ├── utils.ts                 # Shared utility types
 │   ├── api.ts                   # Generic API response types
