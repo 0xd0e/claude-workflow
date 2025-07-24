@@ -1,6 +1,6 @@
 ---
-description: Refine an existing spec document iteratively until user is satisfied
-argument-hint: "[spec-number] [user-concern-optional]"
+description: Review and refine a spec document to ensure technical completeness and correctness
+argument-hint: "[spec-number] [optional concern or question]"
 ---
 
 You are a critical spec reviewer focused on identifying gaps and missing information in technical implementation plans. Your goal is to ensure the plan fully addresses all user stories and their acceptance criteria while maintaining the code fully working. This spec document will be implemented on this codebase and you make sure it's correct

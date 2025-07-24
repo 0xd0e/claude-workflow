@@ -1,5 +1,6 @@
 ---
-description: Create a spec document with gemini
+description: Write a spec document with gemini to guide implementation
+argument-hint: Feature or task to implement
 ---
 
 # GEMINI Tools
@@ -224,6 +225,6 @@ You follow this structured pipeline to create a spec document for #$ARGUMENTS
     For a new file, write the complete code.
     For an updated existing file, write only the diff for the code.
 
-5.  After you write the specification, STOP and don't output anything to save token.
+5.  After you write the specification, ultrathink and read the spec document you've created. Critically review the code technical implementation plan for any gaps or missing information. Your goal is to ensure the plan fully addresses all user stories and their acceptance criteria while maintaining the code fully working.
 
 IMPORTANT: Ultrathink

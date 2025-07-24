@@ -1,3 +1,8 @@
+---
+description: Analyze and implement code changes through a structured workflow
+argument-hint: Briefly describe the feature, bug fix, or enhancement
+---
+
 ## Context
 
 - Code Guidelines: @.claude/code-guidelines.md

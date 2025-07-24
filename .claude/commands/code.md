@@ -1,6 +1,6 @@
 ---
-description: Implement the code based on the referenced spec document
-argument-hint: Spec document number
+description: Implement code based on the specified spec document
+argument-hint: Spec document number (e.g., 003)
 ---
 
 - .claude/plan: !`ls -p .claude/plan`
