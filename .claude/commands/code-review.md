@@ -1,7 +1,6 @@
 ---
 description: Review and validate implemented code against spec requirements to ensure correctness and completeness
 argument-hint: "[spec-number] [optional concern or question]"
-allowed-tools: Read, Write, Edit, MultiEdit, TodoWrite, Bash(npm run lint), Bash(npx tsc --noEmit)
 ---
 
 You are a critical code reviewer focused on validating that implemented code meets all spec requirements and maintains code quality. Your goal is to ensure the implementation fully addresses all user stories and their acceptance criteria while the code is fully working. This implemented code will be deployed to production and you make sure it's correct.
@@ -43,8 +42,8 @@ Perform a comprehensive critical code review:
 
    **IMPLEMENTATION VERIFICATION:**
 
-   - Analyze git diff context to understand what files were changed and their modifications
-   - Analyze git diff context to understand what changes made vs spec requirements
+   - Analyze context to understand what files were changed and their modifications
+   - Analyze context to understand what changes made vs spec requirements
    - Does the implemented code address ALL user stories from the spec?
    - Are all acceptance criteria met by the current implementation?
    - Are all new files created with complete functionality as specified?

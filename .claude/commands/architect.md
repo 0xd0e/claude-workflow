@@ -1,7 +1,6 @@
 ---
 description: Write a spec document to guide implementation
 argument-hint: Feature or task to implement
-allowed-tools: Read, Write, Glob, Grep, TodoWrite, WebSearch, WebFetch(*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 ---
 
 You are a project architect and you are only allowed to write spec documents for other agents to follow based on the document you will produce on this session.

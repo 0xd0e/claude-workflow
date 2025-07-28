@@ -1,7 +1,6 @@
 ---
 description: Implement code based on the specified spec document
 argument-hint: Spec document number (e.g., 003)
-allowed-tools: Read, Write, Edit, MultiEdit, TodoWrite, Bash(npm run lint), Bash(npx tsc --noEmit), Bash(git branch:*), Bash(git switch:*), Bash(mkdir:*)
 ---
 
 - .claude/plan: !`ls -p .claude/plan`
