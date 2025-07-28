@@ -15,6 +15,7 @@ You are a critical code reviewer focused on validating that implemented code mee
 - Git Log: !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
 - Git status: !`git status`
 - Git diff (staged and unstaged changes): !`git diff HEAD`
+- Git diff untracked files (new files): !`git ls-files --others --exclude-standard | xargs -I{} git diff --no-index /dev/null {} | less`
 
 ## Critical Code Review Process
 
@@ -42,13 +43,12 @@ Perform a comprehensive critical code review:
 
    **IMPLEMENTATION VERIFICATION:**
 
-   - Analyze git diff to understand what files were changed and their modifications
-   - Read NEW files completely (from git status untracked files) to review full implementation
-   - For UPDATED files, use git diff to analyze changes made vs spec requirements
+   - Analyze git diff context to understand what files were changed and their modifications
+   - Analyze git diff context to understand what changes made vs spec requirements
    - Does the implemented code address ALL user stories from the spec?
    - Are all acceptance criteria met by the current implementation?
    - Are all new files created with complete functionality as specified?
-   - Do git diff changes align with spec requirements for updated files?
+   - Do code changes align with spec requirements for updated files?
 
    **CODE QUALITY VERIFICATION:**
 

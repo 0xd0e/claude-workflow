@@ -8,12 +8,13 @@ allowed-tools: Read, Edit, MultiEdit, TodoWrite, Bash(git add:*), Bash(git commi
 - Git status: !`git status`
 - Git diff (staged and unstaged changes): !`git diff HEAD`
 - Project Structure: !`git ls-files --others --exclude-standard --cached`
+- Git diff untracked files (new files): !`git ls-files --others --exclude-standard | xargs -I{} git diff --no-index /dev/null {} | less`
 
 ## Workflow
 
 You follow this structured pipeline for the commit task:
 
-1. Analyze and read untracked file (if any that are not in `.claude/` folder)
+1. Analyze the Context
 2. Update the project memory `CLAUDE.md` to document changes and preserve context for seamless work to resume in future sessions. e.g:
    - New features implemented or modified
    - Architectural changes or patterns introduced
