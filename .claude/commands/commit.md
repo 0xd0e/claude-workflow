@@ -1,6 +1,6 @@
 ---
 description: Create a git commit
-allowed-tools: Read, Edit, MultiEdit, TodoWrite, Bash(git add:*), Bash(git commit:*)
+allowed-tools: Read(CLAUDE.md), Edit, MultiEdit, TodoWrite, Bash(git add:*), Bash(git commit:*)
 ---
 
 ## Context
