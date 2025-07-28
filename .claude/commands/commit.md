@@ -1,18 +1,20 @@
 ---
 description: Create a git commit
+allowed-tools: Read, Edit, MultiEdit, TodoWrite, Bash(git add:*), Bash(git commit:*)
 ---
 
 ## Context
 
-Git status: !`git status`
-Git diff (staged and unstaged changes): !`git diff HEAD`
+- Git status: !`git status`
+- Git diff (staged and unstaged changes): !`git diff HEAD`
+- Project Structure: !`git ls-files --others --exclude-standard --cached`
 
 ## Workflow
 
 You follow this structured pipeline for the commit task:
 
 1. Analyze and read untracked file (if any that are not in `.claude/` folder)
-2. Update the project memory `CLAUDE.md` to document changes and preserve context for seamless work resumption in future sessions. e.g:
+2. Update the project memory `CLAUDE.md` to document changes and preserve context for seamless work to resume in future sessions. e.g:
    - New features implemented or modified
    - Architectural changes or patterns introduced
    - Key files affected and their purposes
@@ -28,7 +30,6 @@ You follow this structured pipeline for the commit task:
    [optional footer]
 
 4. Commit the changes `git add .` then `git commit`
-5. Merge the branch into `main` and delete this branch.
-6. After you complete this commit task. STOP and don't output anything.
+5. After you complete this commit task. STOP and don't output anything.
 
 IMPORTANT : Ultrathink

@@ -1,9 +1,11 @@
 ---
 description: Implement code based on the specified spec document
 argument-hint: Spec document number (e.g., 003)
+allowed-tools: Read, Write, Edit, MultiEdit, TodoWrite, Bash(npm run lint), Bash(npx tsc --noEmit), Bash(git branch:*), Bash(git switch:*), Bash(mkdir:*)
 ---
 
 - .claude/plan: !`ls -p .claude/plan`
+- Project Structure: !`git ls-files --others --exclude-standard --cached`
 
 You follow this structured pipeline for the implement this task number $ARGUMENT
 
@@ -20,13 +22,13 @@ You follow this structured pipeline for the implement this task number $ARGUMENT
    ```bash
    git branch
    IF on main/master → IMMEDIATELY create feature branch:
-   git checkout -b feat/[feature-name]
+   git switch -c feat/[feature-name]
    ```
 4. Implement based on the spec document
 5. IMPORTANT: Run LINT then TYPE CHECK after all file modification:
    `npm run lint` then `npx tsc --noEmit`
-   IMPORTANT: If any errors, warnings, or unused code are detected, ultrathink and validate whether to add, remove, or adjust code based on the user stories and acceptance criteria.
-   Every fix must be intentional and aligned with the intended functionality and requirements based on the spec document
-6. After you write the all code based on spec document and pass the lint and typescript check. STOP and don't output anything to save token.
+6. IMPORTANT: If any errors, warnings, or unused code are detected, ultrathink and validate whether to add, remove, or adjust code based on the user stories and acceptance criteria.
+   Every fix must be intentional and aligned with the intended functionality and requirements based on the spec document.
+   IMPORTANT: Use `exit_plan_mode` to present the fix to user and wait for user approval to apply the fix
 
 IMPORTANT: Ultrathink

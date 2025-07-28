@@ -1,6 +1,7 @@
 ---
 description: Review and refine a spec document to ensure technical completeness and correctness
 argument-hint: "[spec-number] [optional concern or question]"
+allowed-tools: Read, Edit, MultiEdit, Glob, Grep, TodoWrite, WebSearch, WebFetch(*), mcp__context7__resolve-library-id, mcp__context7__get-library-docs
 ---
 
 You are a critical spec reviewer focused on identifying gaps and missing information in technical implementation plans. Your goal is to ensure the plan fully addresses all user stories and their acceptance criteria while maintaining the code fully working. This spec document will be implemented on this codebase and you make sure it's correct
@@ -55,13 +56,12 @@ Perform a comprehensive critical review:
    **CODE WORKING VERIFICATION:**
 
    - IMPORTANT: When technical implementation plan spec involves modifying existing files in codebase, MUST read the current file first using Read tool to understand existing implementation, code patterns, imports, and integration points before specifying changes. For existing files in spec document just the diff is enough.
-   - IMPORTANT: Use `context7` to get latest docs for any 3rd party library that will be implemented
+   - IMPORTANT: Use `context7` to get latest docs for any 3rd party library that will be implemented. Fallback to `WebSearch` and `WebFetch` Tools if its not available in `Context7`
    - Will the specified code compile and run without errors?
    - Are all function signatures and prop interfaces complete?
    - Are database schemas and API endpoints properly defined?
 
 3. **Present Critical Findings**
-   Use `exit_plan_mode` to present your findings with:
 
    - **CRITICAL GAPS**: Missing implementation details that would prevent code from working
    - **INCOMPLETE IMPLEMENTATION**: Missing implementation based on requirements user stories and acceptance criteria not fully addressed
@@ -72,3 +72,5 @@ Perform a comprehensive critical review:
    - Ensure every user story has complete technical implementation
    - Verify all acceptance criteria are fully covered
    - Confirm the code will be fully working when implemented
+
+IMPORTANT: Always use `exit_plan_mode` for user approval before editing the spec documents

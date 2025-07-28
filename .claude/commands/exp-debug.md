@@ -22,7 +22,7 @@ You should follow this structured pipeline to debug this code for objective:
     Present to user what this code about and refined objective to the user.
     IMPORTANT: Ask user if this is its objective or need revise
     Once user confirm it with `yes` proceed to the next step.
-3.  Present your plan by calling the `exit_plan_mode` tool, which will prompt the user to confirm the plan. Do NOT make any file changes or run any tools that modify the system state in any way until the user has confirmed the plan.
+3.  Present your plan by calling the `ExitPlanMode` tool, which will prompt the user to confirm the plan. Do NOT make any file changes or run any tools that modify the system state in any way until the user has confirmed the plan.
 
     ```
     Detail of the plan

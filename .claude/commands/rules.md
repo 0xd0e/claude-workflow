@@ -22,14 +22,13 @@ You are now working on a project with mandatory coding rules. Execute these step
 - You CANNOT deviate from these rules under ANY circumstances
 - If a rule conflicts with your normal approach, the project rule ALWAYS wins
 - Treat rule violations as critical errors that MUST be prevented
-- If `.claude/code-guidelines.md` doesn't exist, inform the user and ask them to create it
 
 ## ACKNOWLEDGMENT REQUIRED:
 
-After reading `.claude/code-guidelines.md`, you MUST:
+You MUST:
 
-1. Confirm you have read and understood all rules
-2. State that you will enforce them absolutely  
+1. Confirm you have understood all rules
+2. State that you will enforce them absolutely
 3. Then proceed with the user's request while maintaining strict compliance
 
 IMPORTANT: These are not suggestions - they are binding requirements you must obey completely.
