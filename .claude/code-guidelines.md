@@ -793,6 +793,207 @@ src/
 - Organized File Structure: `components`, `config`, `types`, `stores`, `hooks`, `server-actions`, `libs`
 - Shared components: Place in the `components` folder if used in many places
 
+## Testing and Quality
+
+### Testing Framework
+
+- **Vitest**: Modern testing framework
+- **Testing Library**: React component testing utilities
+- **JSDOM**: Browser environment simulation
+
+### Test Structure (Centralized)
+
+```
+test/
+├── setup/                   # Test configuration and setup
+├── fixtures/                # Test data and fixtures
+├── helpers/                 # Test utilities and helpers
+├── unit/                    # Unit tests (80% - fast, isolated)
+├── integration/             # Integration tests (20% - component interactions)
+└── e2e/                     # End-to-end tests (only when explicitly requested)
+```
+
+### Testing Rules
+
+- **Default Testing**: Focus on unit and integration tests only (80/20 split: 80% unit tests, 20% integration tests)
+- **E2E Testing**: Only implement e2e tests when explicitly requested by the user
+- **Centralized Structure**: All tests in `test/` folder, mirroring `src/` structure
+- **File Naming**: `*.test.ts` or `*.test.tsx` for all test files (must contain `.test.` or `.spec.`)
+- **Fixtures**: Use type-safe fixtures with `test.extend()` for reusable test data
+- **Isolation**: Each test should be independent and not rely on other tests
+- **Async Server Components**: Use integration tests with mocked dependencies (avoid E2E unless requested)
+
+### What to Test (Examples)
+
+**Unit Tests (80%)** - Test individual components/functions in isolation:
+
+- Component rendering and props handling
+- Utility functions and business logic
+- Form validation and state management
+- Schema validation (Zod schemas)
+- Custom hooks behavior
+- State management (Zustand stores, React state)
+- Event handlers and user interactions
+
+**Integration Tests (20%)** - Test component interactions and external services:
+
+- API endpoints (POST, GET, PUT, DELETE)
+- Database operations
+- Authentication flows
+- Component integration (forms with validation)
+- Server actions and middleware
+
+**E2E Tests (Only when explicitly requested)** - Test critical user journeys:
+
+- Complete authentication flow (sign up → verify → sign in → dashboard)
+- Blog management workflow (create → edit → publish → view)
+- Core business processes (user onboarding, payment flows)
+- Cross-browser compatibility for critical features
+
+### Configuration
+
+**Installation:**
+
+```bash
+npm install -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom vite-tsconfig-paths @vitest/coverage-v8
+```
+
+**vitest.config.ts:**
+
+```typescript
+import { defineConfig } from "vitest/config"
+import react from "@vitejs/plugin-react"
+import tsconfigPaths from "vite-tsconfig-paths"
+
+export default defineConfig({
+  plugins: [tsconfigPaths(), react()],
+  test: {
+    environment: "jsdom",
+    coverage: {
+      reporter: ["text", "json", "html"],
+    },
+    // UI and debugging options
+
+    // Browser testing (optional)
+    // browser: {
+    //   enabled: true,
+    //   provider: 'playwright',
+    //   instances: [{ browser: 'chromium' }]
+    // }
+  },
+})
+```
+
+**Basic Test Example:**
+
+```typescript
+import { expect, test } from "vitest"
+import { render, screen } from "@testing-library/react"
+import { SignInForm } from "@/components/auth/SignInForm"
+
+test("renders sign in form", () => {
+  render(<SignInForm />)
+  expect(screen.getByRole("button", { name: /sign in/i })).toBeDefined()
+})
+
+// Custom matchers
+expect.extend({
+  toBeValidEmail(received) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return {
+      pass: emailRegex.test(received),
+      message: () => `Expected ${received} to be a valid email`,
+    }
+  },
+})
+```
+
+**Advanced Examples:**
+
+```typescript
+// Fixtures with test.extend()
+import { test as base, expect } from "vitest"
+
+interface TestContext {
+  blogPost: { id: string; title: string; content: string }
+  user: { id: string; email: string }
+}
+
+const test = base.extend<TestContext>({
+  blogPost: async ({}, use) => {
+    const post = { id: "1", title: "Test Post", content: "Content" }
+    await use(post)
+    // cleanup after test
+  },
+  user: async ({}, use) => {
+    const user = { id: "1", email: "test@example.com" }
+    await use(user)
+  },
+})
+
+test("creates blog post with author", ({ blogPost, user }) => {
+  expect(blogPost.title).toBe("Test Post")
+  expect(user.email).toBe("test@example.com")
+})
+
+// Mocking with vi.fn()
+import { vi } from "vitest"
+
+test("handles form submission", async () => {
+  const mockSubmit = vi.fn()
+  render(<SignInForm onSubmit={mockSubmit} />)
+
+  await userEvent.click(screen.getByRole("button", { name: /sign in/i }))
+  expect(mockSubmit).toHaveBeenCalledOnce()
+})
+
+// Test hooks and lifecycle
+describe("user management", () => {
+  beforeAll(async () => {
+    // Setup database
+  })
+
+  beforeEach(() => {
+    // Reset state before each test
+  })
+
+  afterEach(() => {
+    // Cleanup after each test
+  })
+
+  afterAll(async () => {
+    // Teardown database
+  })
+
+  test("creates user", () => {
+    // Test implementation
+  })
+})
+
+// Module mocking
+vi.mock("@/lib/supabase/client", () => ({
+  createClient: vi.fn(() => ({
+    auth: {
+      signIn: vi.fn().mockResolvedValue({ data: { user: mockUser } }),
+    },
+  })),
+}))
+```
+
+### Best Practices
+
+- **Mock External Services**: Isolate dependencies for faster, predictable tests
+- **Type-Safe Fixtures**: Use TypeScript interfaces with `test.extend()` for reusable test data
+- **Object Destructuring**: Always destructure context in fixture functions and tests
+- **Cleanup Pattern**: Fixtures support setup → use → teardown lifecycle
+- **Module Mocking**: Use `vi.mock()` for external dependencies like Supabase client
+- **Browser Testing**: Use Vitest built-in Playwright provider for real browser testing when needed
+- **Custom Matchers**: Extend `expect` with domain-specific assertions using `expect.extend()`
+- **Test Lifecycle**: Use `beforeAll/afterAll` and `beforeEach/afterEach` for setup/teardown
+- **Conditional Tests**: Use `test.skipIf()` and `test.runIf()` for environment-specific tests
+- **Module Import Errors**: Install `vite-tsconfig-paths` for path alias support
+- **Mock Behavior**: Remember Vitest `mockReset()` resets to original implementation (not empty function)
+
 ## IMPORTANT: Git Convention
 
 ### IMPORTANT: Branch Naming Convention
