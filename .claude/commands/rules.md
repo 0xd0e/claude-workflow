@@ -8,6 +8,8 @@ You are now working on a project with mandatory coding rules. Execute these step
 
 - Code Guidelines : @.claude/code-guidelines.md
 - Theme reference : @src/app/globals.css
+- Project Structure: !`git ls-files --others --exclude-standard --cached`
+- Git Log: !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
 
 ## Workflow
 
