@@ -818,14 +818,14 @@ test/
 - **Default Testing**: Focus on unit and integration tests only (80/20 split: 80% unit tests, 20% integration tests)
 - **E2E Testing**: Only implement e2e tests when explicitly requested by the user
 - **Centralized Structure**: All tests in `test/` folder, mirroring `src/` structure
-- **File Naming**: `*.test.ts` or `*.test.tsx` for all test files (must contain `.test.` or `.spec.`)
+- **File Naming**: `*.test.ts` or `*.test.tsx` for all test files
 - **Fixtures**: Use type-safe fixtures with `test.extend()` for reusable test data
 - **Isolation**: Each test should be independent and not rely on other tests
-- **Async Server Components**: Use integration tests with mocked dependencies (avoid E2E unless requested)
+- **Coverage Target**: Aim for 80%+ overall coverage, with unit tests covering business logic and integration tests covering critical user flows
 
 ### What to Test (Examples)
 
-**Unit Tests (80%)** - Test individual components/functions in isolation:
+Unit Tests (80%) - Single component/function isolation
 
 - Component rendering and props handling
 - Utility functions and business logic
@@ -835,20 +835,71 @@ test/
 - State management (Zustand stores, React state)
 - Event handlers and user interactions
 
-**Integration Tests (20%)** - Test component interactions and external services:
+Integration Tests (20%) - Multi-component interactions
 
-- API endpoints (POST, GET, PUT, DELETE)
-- Database operations
-- Authentication flows
-- Component integration (forms with validation)
-- Server actions and middleware
+- API endpoints (POST, GET, PUT, DELETE) with mocked external services
+- Database operations with test database
+- Form submission with validation and server actions
+- Component composition (parent-child component interactions)
+- Authentication middleware with protected routes
 
-**E2E Tests (Only when explicitly requested)** - Test critical user journeys:
+E2E Tests (Only when explicitly requested) - Complete user journeys
 
-- Complete authentication flow (sign up → verify → sign in → dashboard)
+- Full authentication flow (sign up → verify → sign in → dashboard)
 - Blog management workflow (create → edit → publish → view)
 - Core business processes (user onboarding, payment flows)
 - Cross-browser compatibility for critical features
+
+### ❌ What You SHOULD NOT Test
+
+1. Implementation Details
+
+- Avoid asserting internal state or function calls
+- Focus on what the user sees or gets, not how it's done
+
+❌ Bad:
+expect(setState).toHaveBeenCalledWith("loading")
+
+✅ Good:
+expect(screen.getByText("Loading...")).toBeInTheDocument()
+
+2. 3rd-Party Library Internals
+
+- Do not test what you don't own
+- ❌ Examples: Zod's internal validation logic, Axios response formatting, Tailwind behavior
+- ✅ Only test how our code uses them
+
+3. Static Markup and Styles
+
+- Avoid snapshot tests of static components
+- Avoid testing CSS class names unless they affect functionality
+
+4. Generated or Boilerplate Code
+
+- No need to test Next.js config, Tailwind config, ESLint, or auto-generated types
+
+5. Over Testing
+
+- Test common use cases and 2-3 important edge cases only
+- Avoid testing all permutations of optional props or config combinations
+- Focus on what users are most likely to do, not exhaustive internal branches
+- Don't test things just to increase coverage numbers — value > volume
+
+Testing Quick Reference
+
+| Area                   | Test? | Category    |
+| ---------------------- | ----- | ----------- |
+| Pure functions / logic | ✅    | Unit        |
+| Interactive components | ✅    | Unit        |
+| Component interactions | ✅    | Integration |
+| API endpoints          | ✅    | Integration |
+| Full user flows        | ✅    | E2E\*       |
+| Styling / CSS classes  | ❌    | -           |
+| Library internals      | ❌    | -           |
+| Config or boilerplate  | ❌    | -           |
+| Static UI snapshots    | ❌    | -           |
+
+\*E2E only when explicitly requested
 
 ### Configuration
 
@@ -861,6 +912,7 @@ npm install -D vitest @vitejs/plugin-react jsdom @testing-library/react @testing
 **vitest.config.ts:**
 
 ```typescript
+/// <reference types="@vitest/browser/context" />
 import { defineConfig } from "vitest/config"
 import react from "@vitejs/plugin-react"
 import tsconfigPaths from "vite-tsconfig-paths"
@@ -884,6 +936,14 @@ export default defineConfig({
 })
 ```
 
+tsconfig.json
+
+````typescript
+{
+  "compilerOptions": {
+    "types": ["vitest/globals", "vitest/jsdom"],
+
+}
 **Basic Test Example:**
 
 ```typescript
@@ -906,9 +966,31 @@ expect.extend({
     }
   },
 })
-```
+````
 
 **Advanced Examples:**
+
+Server Components Testing
+
+For React Server Components, use integration tests with mocked dependencies:
+
+```typescript
+// Mock external services
+vi.mock("@/lib/supabase/server", () => ({
+  createClient: vi.fn(() => ({
+    from: vi.fn(() => ({
+      select: vi.fn().mockResolvedValue({ data: mockBlogPosts }),
+    })),
+  })),
+}))
+
+// Test Server Component behavior
+test("blog page renders posts from database", async () => {
+  const BlogPage = await import("@/app/blog/page").then((m) => m.default)
+  render(<BlogPage />)
+  expect(screen.getByText("Test Post Title")).toBeInTheDocument()
+})
+```
 
 ```typescript
 // Fixtures with test.extend()
