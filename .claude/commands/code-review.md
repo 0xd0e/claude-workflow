@@ -85,3 +85,4 @@ Perform a comprehensive critical code review:
    - Confirm the code is production-ready and fully functional
 
 IMPORTANT: Always use `exit_plan_mode` before editing the code
+IMPORTANT: Ultrathink
