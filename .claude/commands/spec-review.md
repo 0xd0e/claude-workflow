@@ -73,3 +73,4 @@ Perform a comprehensive critical review:
    - Confirm the code will be fully working when implemented
 
 IMPORTANT: Always use `exit_plan_mode` for user approval before editing the spec documents
+IMPORTANT: Ultrathink
