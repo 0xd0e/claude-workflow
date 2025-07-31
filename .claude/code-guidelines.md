@@ -443,6 +443,7 @@ const selectedUser = useUserStore((state) => state.selectedUser)
 ## IMPORTANT: Utility Functions
 
 - Use lodash utilities for common operations (arrays, objects, strings)
+- Prefer using a well-tested library function over custom. Create custom utilities only when there is no library for that specific operation.
 - Import specific lodash functions to minimize bundle size:
   ```typescript
   import groupBy from "lodash/groupBy"
@@ -566,120 +567,13 @@ Components: `prompt-input, code-block, markdown, message, chat-container, scroll
 
 ## IMPORTANT: NEVER Write Mock Data or Fallbacks
 
-Never create placeholder, mock, or fallback data. Always implement real functionality or leave TODO comments.
+- NEVER create mock data, placeholder, stubs, or fallbacks into the source code. All test-related mocks and fixtures must reside exclusively within the test/ directory.
+- Always implement real functionality or leave TODO comments.
 
 ```ts
 // TODO: Implement user fetching from API endpoint /api/users
 const users = [] // Will be populated from API
 ```
-
-## IMPORTANT: Content Guidelines
-
-### Headline Design
-
-- Make it BIG: `text-4xl md:text-6xl` (h1), `text-3xl md:text-5xl` (h2)
-- Make it BOLD
-- One headline per section
-- Can highlight numbers and key words with primary color
-
-### Spacing System
-
-- 4-point increments. Example: `space-x-4`, `space-y-4`, `space-x-8`, `space-y-8`, `space-x-12`, `space-y-12`
-- Semantic spacing: paragraph to headline, section to section
-- When in doubt, add space
-
-### Headlines & Titles
-
-- Start with clear benefit statements
-- Use contrast to emphasize key words
-- Keep under 10 words when possible
-- Example: "Learn to [action] in [short timeframe], not [long timeframe]"
-
-### Social Proof Elements
-
-- Include detailed testimonials with specific results/metrics
-- Show counts prominently
-- Highlight financial results
-- Use video testimonials when possible
-
-### Value Proposition
-
-- Lead with time savings
-- Contrast traditional vs accelerated
-- Highlight AI integration
-- Show concrete path
-
-### Visual Hierarchy
-
-- Size indicates importance
-- Color contrast guides attention
-- Spacing creates relationships
-- Consistent styling throughout
-
-## Copywriting Guidelines
-
-### Headlines & Titles
-
-- Start with clear benefit statements
-- Use contrast to emphasize key words (e.g. "weeks not months")
-- Keep under 10 words when possible
-- Example formats:
-  - "Learn to [action] in [short timeframe], not [long timeframe]"
-  - "From [starting point] to [result] in [timeframe]"
-  - "[Number] students learned to [action], fast"
-
-### Paragraph Structure
-
-- Single sentence paragraphs preferred
-- Maximum 2-3 sentences per paragraph
-- Use emoji sparingly for emphasis (1-2 per section)
-- Bullet points for lists of features/benefits
-
-### Social Proof Elements
-
-- Include detailed testimonials with:
-  - Specific results/metrics e.g. $ amounts, user counts
-  - Timeframe e.g built in 3 weeks
-- Show counts prominently e.g 3,086 users
-- Highlight financial results e.g $400 MRR, $162.5 in sales
-- Use video testimonials when possible
-
-### Value Proposition (Education Focus)
-
-- Lead with time savings e.g 12 hours of video vs 64 hours elsewhere
-- Contrast traditional vs accelerated learning
-- Highlight AI integration e.g AI writes and fixes code for you
-- Include:
-  1. Problem with traditional approach
-  2. Your accelerated approach
-  3. AI advantage
-  4. success stories
-  5. Detailed breakdown
-
-### Pricing Section
-
-- Simple tiered pricing
-- Highlight savings/discounts
-- Include:
-  - Price
-  - Billing frequency
-  - Key features
-  - CTA button
-- Add comparison to show value
-
-### Visual Style
-
-- Consistent color scheme
-- High contrast text
-- Ample white space
-- Mobile-first responsive design
-- Illustrations/icons to break up text
-
-## MCP Tools
-
-- Use Supabase MCP for any task involving Supabase and database
-- Use browseruse MCP for frontend testing, browser logs, screenshots, visiting URLs
-- Use context7 to get the latest documentation of a library
 
 ## IMPORTANT: File Structure & Organization
 
@@ -1076,6 +970,134 @@ vi.mock("@/lib/supabase/client", () => ({
 - **Module Import Errors**: Install `vite-tsconfig-paths` for path alias support
 - **Mock Behavior**: Remember Vitest `mockReset()` resets to original implementation (not empty function)
 
+## IMPORTANT: Content Guidelines
+
+### Headline Design
+
+- Make it BIG: `text-4xl md:text-6xl` (h1), `text-3xl md:text-5xl` (h2)
+- Make it BOLD
+- One headline per section
+- Can highlight numbers and key words with primary color
+
+### Spacing System
+
+- 4-point increments. Example: `space-x-4`, `space-y-4`, `space-x-8`, `space-y-8`, `space-x-12`, `space-y-12`
+- Semantic spacing: paragraph to headline, section to section
+- When in doubt, add space
+
+### Headlines & Titles
+
+- Start with clear benefit statements
+- Use contrast to emphasize key words
+- Keep under 10 words when possible
+- Example: "Learn to [action] in [short timeframe], not [long timeframe]"
+
+### Social Proof Elements
+
+- Include detailed testimonials with specific results/metrics
+- Show counts prominently
+- Highlight financial results
+- Use video testimonials when possible
+
+### Value Proposition
+
+- Lead with time savings
+- Contrast traditional vs accelerated
+- Highlight AI integration
+- Show concrete path
+
+### Visual Hierarchy
+
+- Size indicates importance
+- Color contrast guides attention
+- Spacing creates relationships
+- Consistent styling throughout
+
+## Copywriting Guidelines
+
+### Headlines & Titles
+
+- Start with clear benefit statements
+- Use contrast to emphasize key words (e.g. "weeks not months")
+- Keep under 10 words when possible
+- Example formats:
+  - "Learn to [action] in [short timeframe], not [long timeframe]"
+  - "From [starting point] to [result] in [timeframe]"
+  - "[Number] students learned to [action], fast"
+
+### Paragraph Structure
+
+- Single sentence paragraphs preferred
+- Maximum 2-3 sentences per paragraph
+- Use emoji sparingly for emphasis (1-2 per section)
+- Bullet points for lists of features/benefits
+
+### Social Proof Elements
+
+- Include detailed testimonials with:
+  - Specific results/metrics e.g. $ amounts, user counts
+  - Timeframe e.g built in 3 weeks
+- Show counts prominently e.g 3,086 users
+- Highlight financial results e.g $400 MRR, $162.5 in sales
+- Use video testimonials when possible
+
+### Value Proposition (Education Focus)
+
+- Lead with time savings e.g 12 hours of video vs 64 hours elsewhere
+- Contrast traditional vs accelerated learning
+- Highlight AI integration e.g AI writes and fixes code for you
+- Include:
+  1. Problem with traditional approach
+  2. Your accelerated approach
+  3. AI advantage
+  4. success stories
+  5. Detailed breakdown
+
+### Pricing Section
+
+- Simple tiered pricing
+- Highlight savings/discounts
+- Include:
+  - Price
+  - Billing frequency
+  - Key features
+  - CTA button
+- Add comparison to show value
+
+### Visual Style
+
+- Consistent color scheme
+- High contrast text
+- Ample white space
+- Mobile-first responsive design
+- Illustrations/icons to break up text
+
+## Additional Tools
+
+- Use Supabase MCP for any task involving Supabase and database
+- Use browseruse MCP for frontend testing, browser logs, screenshots, visiting URLs
+- Use context7 to get the latest documentation of a library
+- You MUST use `ast-grep` command for a search that requires syntax-aware or structural matching, default to `ast-grep --lang typescript -p 'searchpattern'` (or set `--lang` appropriately) and avoid falling back to text-only tools like `rg` or `grep` unless user explicitly request a plain-text search.
+  Example usage `ast-grep`:
+  - Find all usages of the `useEffect` hook. `ast-grep --lang tsx -p 'useEffect($$$)'`
+  - Find functions that violate the "named parameters" rule by having multiple top-level arguments: `ast-grep --lang tsx -p 'function $FUNC($A, $B) {$$$}'`
+  - Find any variable or parameter explicitly typed as `any`: `ast-grep --lang typescript -p '$VAR: any'`
+  - Find all `class` declarations, which violate the functional programming rule: `ast-grep --lang typescript -p 'class $NAME { $$$ }'`
+  - Find relative path imports (`../`) that should be path aliases (`@/`): `ast-grep --lang tsx -p 'import $$$ from "../$$$"'`
+  - Find index file imports (`/index`) that violate the "no index exports" rule: `ast-grep --lang tsx -p 'import $$$ from "$$$/index"'`
+  - Find interfaces defined separately when a Zod schema exists (heuristic): `ast-grep --lang typescript -p 'export interface User { $$$ }'`
+  - Find all usages of the `useEffect` hook for manual review: `ast-grep --lang tsx -p 'useEffect($$$)'`
+  - Find all usages of the `useState` hook to identify client components: `ast-grep --lang tsx -p 'useState($$$)'`
+  - Find native `<img>` tags that should be replaced with Next.js `<Image>`: `ast-grep --lang tsx -p '<img $$$ />'`
+  - Find `fetch` calls missing the `{ cache: 'no-store' }` option for dynamic data: `ast-grep --lang tsx -p 'fetch($$$ARGS) -v { cache: "no-store" }'`
+  - Find components that are likely client components due to event handlers (`onClick`, `onChange`): `ast-grep --lang tsx -p 'onClick={$$$}'`
+  - Find Zod schemas using `.parse()` instead of the required `.safeParse()`: `ast-grep --lang typescript -p '$SCHEMA.parse($$$)'`
+  - Find `z.infer` being used on anything other than a `typeof` schema: `ast-grep --lang typescript -p 'z.infer<$TYPE>' -v 'z.infer<typeof $SCHEMA>'`
+  - Find manual TypeScript `type` or `interface` definitions for boundary data that should be inferred from Zod (e.g., `CreateUser`): `ast-grep --lang typescript -p 'export type CreateUser = { $$$ }'`
+  - Find any custom CSS definitions via `@apply` in CSS files, which should be avoided: `ast-grep --lang css -p '@apply $$$;'`
+  - Find all `console.log` statements left in the code: `ast-grep --lang tsx -p 'console.log($$$)'`
+  - Find `TODO` comments to identify incomplete work: `ast-grep --lang tsx -p '// TODO: $$$'`
+
 ## IMPORTANT: Git Convention
 
 ### IMPORTANT: Branch Naming Convention
@@ -1097,5 +1119,3 @@ The commit message should be structured as follows:
 [body]
 
 [optional footer]
-
-## IMPORTANT: You MUST use `ast-grep` command for a search that requires syntax-aware or structural matching, default to `ast-grep --lang typescript -p 'searchpattern'` (or set `--lang` appropriately) and avoid falling back to text-only tools like `rg` or `grep` unless user explicitly request a plain-text search.
