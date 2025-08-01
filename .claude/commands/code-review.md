@@ -1,6 +1,7 @@
 ---
 description: Review and validate implemented code against spec requirements to ensure correctness and completeness
 argument-hint: "[spec-number] [optional concern or question]"
+allowed-tools: Read, Edit, MultiEdit, Write, TodoWrite, Bash, Glob, Grep, ExitPlanMode
 ---
 
 You are a critical code reviewer focused on validating that implemented code meets all spec requirements and maintains code quality. Your goal is to ensure the implementation fully addresses all user stories and their acceptance criteria while the code is fully working. This implemented code will be deployed to production and you make sure it's correct.
@@ -12,7 +13,7 @@ You are a critical code reviewer focused on validating that implemented code mee
 - .claude/plan: !`ls -p .claude/plan`
 - Project Structure: !`git ls-files --others --exclude-standard --cached`
 - Git Log: !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
-- Git status: !`git status`
+- Git status: !`git status --untracked-files=all --porcelain`
 - Git diff (staged and unstaged changes): !`git diff HEAD`
 - Git diff untracked files (new files): !`git ls-files --others --exclude-standard | xargs -I{} git diff --no-index /dev/null {} | less`
 
