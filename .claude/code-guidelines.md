@@ -1077,26 +1077,7 @@ vi.mock("@/lib/supabase/client", () => ({
 - Use Supabase MCP for any task involving Supabase and database
 - Use browseruse MCP for frontend testing, browser logs, screenshots, visiting URLs
 - Use context7 to get the latest documentation of a library
-- You MUST use `ast-grep` command for a search that requires syntax-aware or structural matching, default to `ast-grep --lang typescript -p 'searchpattern'` (or set `--lang` appropriately) and avoid falling back to text-only tools like `rg` or `grep` unless user explicitly request a plain-text search.
-  Example usage `ast-grep`:
-  - Find all usages of the `useEffect` hook. `ast-grep --lang tsx -p 'useEffect($$$)'`
-  - Find functions that violate the "named parameters" rule by having multiple top-level arguments: `ast-grep --lang tsx -p 'function $FUNC($A, $B) {$$$}'`
-  - Find any variable or parameter explicitly typed as `any`: `ast-grep --lang typescript -p '$VAR: any'`
-  - Find all `class` declarations, which violate the functional programming rule: `ast-grep --lang typescript -p 'class $NAME { $$$ }'`
-  - Find relative path imports (`../`) that should be path aliases (`@/`): `ast-grep --lang tsx -p 'import $$$ from "../$$$"'`
-  - Find index file imports (`/index`) that violate the "no index exports" rule: `ast-grep --lang tsx -p 'import $$$ from "$$$/index"'`
-  - Find interfaces defined separately when a Zod schema exists (heuristic): `ast-grep --lang typescript -p 'export interface User { $$$ }'`
-  - Find all usages of the `useEffect` hook for manual review: `ast-grep --lang tsx -p 'useEffect($$$)'`
-  - Find all usages of the `useState` hook to identify client components: `ast-grep --lang tsx -p 'useState($$$)'`
-  - Find native `<img>` tags that should be replaced with Next.js `<Image>`: `ast-grep --lang tsx -p '<img $$$ />'`
-  - Find `fetch` calls missing the `{ cache: 'no-store' }` option for dynamic data: `ast-grep --lang tsx -p 'fetch($$$ARGS) -v { cache: "no-store" }'`
-  - Find components that are likely client components due to event handlers (`onClick`, `onChange`): `ast-grep --lang tsx -p 'onClick={$$$}'`
-  - Find Zod schemas using `.parse()` instead of the required `.safeParse()`: `ast-grep --lang typescript -p '$SCHEMA.parse($$$)'`
-  - Find `z.infer` being used on anything other than a `typeof` schema: `ast-grep --lang typescript -p 'z.infer<$TYPE>' -v 'z.infer<typeof $SCHEMA>'`
-  - Find manual TypeScript `type` or `interface` definitions for boundary data that should be inferred from Zod (e.g., `CreateUser`): `ast-grep --lang typescript -p 'export type CreateUser = { $$$ }'`
-  - Find any custom CSS definitions via `@apply` in CSS files, which should be avoided: `ast-grep --lang css -p '@apply $$$;'`
-  - Find all `console.log` statements left in the code: `ast-grep --lang tsx -p 'console.log($$$)'`
-  - Find `TODO` comments to identify incomplete work: `ast-grep --lang tsx -p '// TODO: $$$'`
+- You MUST use Bash `ast-grep` command for a search that requires syntax-aware or structural matching, default to `ast-grep --lang typescript -p 'searchpattern'` (or set `--lang` appropriately) and avoid falling back to text-only tools unless user explicitly request a plain-text search.
 
 ## IMPORTANT: Git Convention
 
