@@ -10,8 +10,8 @@ Write clean, straightforward code. Return early to reduce nesting. For general l
 
 ```js
 const processUser = (user) => {
-  if (!user) return null
-  if (!user.isActive) return null
+  if (!user) return
+  if (!user.isActive) return
   return user.profile
 }
 ```
@@ -34,7 +34,7 @@ export const newsletterSchema = z.object({
 
 ### 3. IMPORTANT: YAGNI (You Aren't Gonna Need It)
 
-Only implement what's needed now. NO speculative features.
+Only implement what's needed now. NO speculative features. NO additional improvements.
 
 ## IMPORTANT: TypeScript Code Style Guide
 
@@ -51,10 +51,7 @@ function createUser({ email, name }: { email: string; name: string }) {}
 IMPORTANT RULES:
 
 - NEVER use `any`
-- Use Zod schemas for data that crosses boundaries (API requests/responses, form inputs, external data)
 - Use inline types for component props, place shared/reusable types into `types/` folder
-- ALWAYS infer types from Zod schemas for boundary data
-- NEVER define separate interfaces for data that has Zod schemas
 
 ### IMPORTANT: 3. Imports
 
@@ -73,31 +70,10 @@ import { userSchema } from "@/schemas/user"
 ## IMPORTANT: Zod Schema Validation - Boundary Data Only
 
 - Zod schemas are ONLY for data that crosses boundaries (API requests/responses, form inputs, external data)
-- Use inline types for component props and TypeScript types for utility functions
 - Zod schemas are the SINGLE SOURCE OF TRUTH for validation AND types for boundary data
 - Use zod `safeParse` instead of `parse`
-
-### IMPORTANT: Schema Definition Pattern
-
-```ts
-// schemas/user.ts (Boundary data only)
-export const userSchema = z.object({
-  id: z.string().uuid(),
-  email: z.string().email(),
-  name: z.string().min(2).max(50),
-  createdAt: z.date(),
-})
-
-// Derived schemas
-export const createUserSchema = userSchema.omit({
-  id: true,
-  createdAt: true,
-})
-
-// Types - ONLY inferred from schemas for boundary data
-export type User = z.infer<typeof userSchema>
-export type CreateUser = z.infer<typeof createUserSchema>
-```
+- ALWAYS infer types from Zod schemas for boundary data
+- NEVER define separate interfaces for data that has Zod schemas
 
 ### IMPORTANT: TypeScript Type Organization
 
@@ -106,54 +82,6 @@ export type CreateUser = z.infer<typeof createUserSchema>
 1. **Boundary Data** → Use Zod schemas (API requests/responses, form inputs, external data)
 2. **Reusable Types** → Extract to `types/` folder when used across multiple components
 3. **Component Props** → Inline types for component-specific props
-
-### IMPORTANT: Import Pattern Standards
-
-```ts
-// Always use 'import type' for type-only imports
-import type { ReactNode } from "react"
-import type { ComponentSize } from "@/types/utils"
-```
-
-```ts
-// types/utils.ts (Shared/reusable types - let AI decide when to extract)
-export interface ApiResponse<T> {
-  data: T
-  status: number
-  message?: string
-}
-
-export interface PaginationOptions {
-  page: number
-  limit: number
-  sortBy?: string
-  sortOrder?: "asc" | "desc"
-}
-
-export type ComponentSize = "sm" | "md" | "lg" | "xl"
-export type Theme = "light" | "dark"
-```
-
-```ts
-import type { ReactNode } from "react"
-import type { ComponentSize } from "@/types/utils"
-
-export function Button({
-  variant = "primary",
-  size = "md",
-  disabled = false,
-  onClick,
-  children,
-}: {
-  variant?: "primary" | "secondary" | "danger"
-  size?: ComponentSize
-  disabled?: boolean
-  onClick?: () => void
-  children: ReactNode
-}) {
-  // Component implementation
-}
-```
 
 ### IMPORTANT: General Guidelines
 
@@ -231,44 +159,14 @@ export const UserForm = () => {
 }
 ```
 
-### IMPORTANT: Specific Validation Scenarios
-
-```ts
-// File upload validation
-export const fileUploadSchema = z.object({
-  file: z
-    .instanceof(File)
-    .refine((file) => file.size <= 5000000, "File size must be less than 5MB")
-    .refine(
-      (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
-      "Only JPEG, PNG, and WebP files are allowed"
-    ),
-})
-
-// URL parameter validation
-export const userParamsSchema = z.object({
-  id: z.string().uuid("Invalid user ID format"),
-})
-
-// Search query validation
-export const searchSchema = z.object({
-  q: z.string().min(1).max(100),
-  page: z.coerce.number().min(1).default(1),
-  limit: z.coerce.number().min(1).max(100).default(10),
-})
-
-// API response validation
-export const apiUserResponseSchema = z.object({
-  id: z.string(),
-  email: z.string().email(),
-  name: z.string(),
-  createdAt: z.string().datetime(),
-})
-```
-
 ## IMPORTANT: React Development - Server Components First
 
 - Minimize the use of `'use client'`, `useEffect`, and `setState`; favor React Server Components (RSC) and Next.js SSR features.
+- Server Actions for internal mutations - Use for form submissions and UI-coupled operations
+- Always build corresponding API routes - Create matching API routes for every Server Action to enable future external consumption and scaling
+- Data Access Layer pattern - Extract shared business logic to maintain consistency between Server Actions and API routes
+- API routes for all data operations - Ensure all CRUD operations have API endpoints for external apps, mobile clients, and third-party integrations
+- Protect API routes for mutation endpoints
 
 ### IMPORTANT: React useEffect Guidelines
 
@@ -324,34 +222,6 @@ IMPORTANT RULES:
 - Data Fetching: Use fetch in Server Components for static or dynamic server-side data fetching to maximize performance and reduce client bundle size, and `@tanstack/react-query` in Client Components when interactivity or client-side revalidation is needed.
 - Simplicity: Keep hooks focused on a single responsibility
 
-```ts
-// hooks/useUserData.ts
-import { useQuery } from "@tanstack/react-query"
-import { User } from "@/schemas/user"
-
-const fetchUser = async (userId: string): Promise<User> => {
-  const response = await fetch(`/api/users/${userId}`)
-  if (!response.ok) {
-    throw new Error("Network response was not ok")
-  }
-  return response.json()
-}
-
-export function useUserData(userId: string) {
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["user", userId],
-    queryFn: () => fetchUser(userId),
-    enabled: !!userId,
-  })
-
-  return {
-    user: data,
-    isLoading,
-    error,
-  }
-}
-```
-
 ## IMPORTANT: Data Fetching
 
 ### IMPORTANT: fetch (Default Choice)
@@ -373,62 +243,9 @@ async function Page() {
 
 USE ONLY IF: The component requires interactivity, client-side revalidation, or real-time updates.
 
-```ts
-"use client"
-
-import { useQuery } from "@tanstack/react-query"
-
-const fetchUsers = async (): Promise<User[]> => {
-  const response = await fetch("/api/users?page=1")
-  if (!response.ok) {
-    throw new Error("Network response was not ok")
-  }
-  return response.json()
-}
-
-export default function Users() {
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["users", "page-1"],
-    queryFn: fetchUsers,
-  })
-
-  if (isLoading) return <p>Loading...</p>
-  if (error) return <p>Error loading users</p>
-
-  return <UserList users={data} />
-}
-```
-
 ## IMPORTANT: State Management - Zustand for Client State
 
-Use Zustand for client application state management (UI state, user preferences, etc.). Use TanStack Query for server state.
-
-```ts
-// stores/useUserStore.ts
-import { create } from "zustand"
-import { User } from "@/schemas/user"
-
-interface UserState {
-  users: User[]
-  selectedUser: User | null
-  loading: boolean
-  setUsers: (users: User[]) => void
-  selectUser: (user: User | null) => void
-  addUser: (user: User) => void
-}
-
-export const useUserStore = create<UserState>()((set) => ({
-  users: [],
-  selectedUser: null,
-  loading: false,
-  setUsers: (users) => set({ users }),
-  selectUser: (user) => set({ selectedUser: user }),
-  addUser: (user) =>
-    set((state) => ({
-      users: [...state.users, user],
-    })),
-}))
-```
+- Use Zustand for client application state management (UI state, user preferences, etc.). Use TanStack Query for server state.
 
 ### IMPORTANT: Usage Pattern
 
@@ -482,7 +299,6 @@ IMPORTANT: ALWAYS refer to `globals.css` for color definitions and variables. Us
 
 ### IMPORTANT: Tailwind CSS
 
-- Utility-first styling
 - Mobile first Responsive Design pattern using Tailwind breakpoints and flex layout
 - Avoid using `container` class in tailwindCSS
 - Avoid Arbitrary Values: Favor Tailwind's predefined scale values
@@ -572,7 +388,7 @@ Components: `prompt-input, code-block, markdown, message, chat-container, scroll
 
 ```ts
 // TODO: Implement user fetching from API endpoint /api/users
-const users = [] // Will be populated from API
+const users = []
 ```
 
 ## IMPORTANT: File Structure & Organization
@@ -588,94 +404,21 @@ const users = [] // Will be populated from API
 
 ```bash
 src/
-├── app/                          # Next.js App Router
-│   ├── globals.css              # Global styles
-│   ├── layout.tsx               # Root layout
-│   ├── page.tsx                 # Home page
-│   ├── (auth)/                  # Route group - auth pages
-│   │   ├── login/
-│   │   │   └── page.tsx         # /login
-│   │   ├── register/
-│   │   │   └── page.tsx         # /register
-│   │   └── layout.tsx           # Auth layout wrapper
-│   ├── (dashboard)/             # Route group - dashboard pages
-│   │   ├── dashboard/
-│   │   │   └── page.tsx         # /dashboard
-│   │   ├── settings/
-│   │   │   └── page.tsx         # /settings
-│   │   └── layout.tsx           # Dashboard layout wrapper
-│   ├── api/                     # API routes
-│   │   ├── auth/
-│   │   │   └── route.ts         # POST /api/auth
-│   │   ├── users/
-│   │   │   ├── route.ts         # GET/POST /api/users
-│   │   │   └── [id]/
-│   │   │       └── route.ts     # GET/PUT/DELETE /api/users/[id]
-│   │   └── products/
-│   │       └── route.ts         # API endpoints for products
-│   └── user-profile/
-│       └── page.tsx             # /user-profile
-├── components/                   # React components
-│   ├── ui/                      # Shadcn UI components
-│   │   ├── button.tsx           # Base button component
-│   │   ├── card.tsx             # Base card component
-│   │   ├── input.tsx            # Base input component
-│   │   └── dialog.tsx           # Base dialog component
-│   ├── auth/                    # Auth-specific components
-│   │   ├── LoginForm.tsx        # Login form component
-│   │   ├── RegisterForm.tsx     # Registration form
-│   │   └── AuthProvider.tsx     # Auth context provider
-│   ├── dashboard/               # Dashboard-specific components
-│   │   ├── Sidebar.tsx          # Dashboard sidebar
-│   │   ├── Header.tsx           # Dashboard header
-│   │   └── StatsCard.tsx        # Statistics card component
-│   ├── user-profile/            # User profile page components
-│   │   ├── ProfileForm.tsx      # User profile edit form
-│   │   └── AvatarUpload.tsx     # Avatar upload component
-│   ├── shared/                  # Shared/common components
-│   │   ├── LoadingSpinner.tsx   # Loading state component
-│   │   ├── ErrorBoundary.tsx    # Error boundary wrapper
-│   │   └── Navigation.tsx       # Main navigation component
-│   └── providers/               # React context providers
-│       ├── QueryProvider.tsx    # TanStack Query provider
-│       └── ThemeProvider.tsx    # Theme context provider
-├── schemas/                     # Zod schemas (SSOT for validation & types)
-│   ├── user.ts                  # User boundary data schemas
-│   ├── product.ts               # Product boundary data schemas
-│   └── api/                     # API request/response schemas
-│       ├── auth.ts              # Auth API schemas
-│       ├── users.ts             # User API request/response schemas
-│       └── products.ts          # Product API schemas
-├── config/                      # Static constants and configuration
-│   ├── constants.ts             # App constants
-│   ├── database.ts              # Database configuration
-│   └── env.ts                   # Centralize environment variable
-├── types/                       # Shared types only (no cross boundary validation types)
-│   ├── utils.ts                 # Shared utility types
-│   ├── api.ts                   # Generic API response types
-│   └── components.ts            # Common component prop types
-├── stores/                      # Zustand stores for client state
-│   ├── useAuthStore.ts          # Authentication state
-│   ├── useUserStore.ts          # User management state
-│   └── useThemeStore.ts         # Theme/UI state
-├── hooks/                       # Custom React hooks
-│   ├── useAuth.ts               # Authentication hooks
-│   ├── useLocalStorage.ts       # Local storage hook
-│   └── useDebounce.ts           # Debounce utility hook
-├── server-actions/              # Next.js Server Actions
-│   ├── auth.ts                  # Authentication actions
-│   ├── users.ts                 # User management actions
-│   └── products.ts              # Product management actions
-├── utils/                       # Utility functions and helpers
-│   ├── validation.ts            # Validation utilities
-│   ├── formatters.ts            # Data formatting utilities
-│   ├── api.ts                   # API request utilities
-│   └── date.ts                  # Date manipulation utilities
-└── lib/                         # Third-party library configurations
-    ├── supabase.ts              # Supabase client setup
-    ├── prisma.ts                # Prisma client setup
-    ├── auth.ts                  # Auth.js configuration
-    └── utils.ts                 # Utility functions (cn, etc.)
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Route group - auth pages
+│   ├── (dashboard)/       # Route group - protected pages
+│   ├── (public)/          # Route group - public pages
+│   └── api/               # API routes
+├── components/            # React components
+│   ├── ui/               # Shadcn UI components
+│   ├── auth/             # Auth-specific components
+│   └── [feature]/        # Feature-specific components
+├── schemas/              # Zod schemas (SSOT for validation & types)
+├── config/               # Static constants and configuration
+├── db/                   # Database schema and connection
+├── server-actions/       # Next.js Server Actions
+├── hooks/                # Custom React hooks
+└── lib/                  # Third-party library configurations
 ```
 
 ## IMPORTANT: General Principles
@@ -779,22 +522,6 @@ expect(screen.getByText("Loading...")).toBeInTheDocument()
 - Focus on what users are most likely to do, not exhaustive internal branches
 - Don't test things just to increase coverage numbers — value > volume
 
-Testing Quick Reference
-
-| Area                   | Test? | Category    |
-| ---------------------- | ----- | ----------- |
-| Pure functions / logic | ✅    | Unit        |
-| Interactive components | ✅    | Unit        |
-| Component interactions | ✅    | Integration |
-| API endpoints          | ✅    | Integration |
-| Full user flows        | ✅    | E2E\*       |
-| Styling / CSS classes  | ❌    | -           |
-| Library internals      | ❌    | -           |
-| Config or boilerplate  | ❌    | -           |
-| Static UI snapshots    | ❌    | -           |
-
-\*E2E only when explicitly requested
-
 ### Configuration
 
 **Installation:**
@@ -818,8 +545,6 @@ export default defineConfig({
     coverage: {
       reporter: ["text", "json", "html"],
     },
-    // UI and debugging options
-
     // Browser testing (optional)
     // browser: {
     //   enabled: true,
@@ -832,128 +557,12 @@ export default defineConfig({
 
 tsconfig.json
 
-````typescript
+```typescript
 {
   "compilerOptions": {
     "types": ["vitest/globals", "vitest/jsdom"],
 
 }
-**Basic Test Example:**
-
-```typescript
-import { expect, test } from "vitest"
-import { render, screen } from "@testing-library/react"
-import { SignInForm } from "@/components/auth/SignInForm"
-
-test("renders sign in form", () => {
-  render(<SignInForm />)
-  expect(screen.getByRole("button", { name: /sign in/i })).toBeDefined()
-})
-
-// Custom matchers
-expect.extend({
-  toBeValidEmail(received) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return {
-      pass: emailRegex.test(received),
-      message: () => `Expected ${received} to be a valid email`,
-    }
-  },
-})
-````
-
-**Advanced Examples:**
-
-Server Components Testing
-
-For React Server Components, use integration tests with mocked dependencies:
-
-```typescript
-// Mock external services
-vi.mock("@/lib/supabase/server", () => ({
-  createClient: vi.fn(() => ({
-    from: vi.fn(() => ({
-      select: vi.fn().mockResolvedValue({ data: mockBlogPosts }),
-    })),
-  })),
-}))
-
-// Test Server Component behavior
-test("blog page renders posts from database", async () => {
-  const BlogPage = await import("@/app/blog/page").then((m) => m.default)
-  render(<BlogPage />)
-  expect(screen.getByText("Test Post Title")).toBeInTheDocument()
-})
-```
-
-```typescript
-// Fixtures with test.extend()
-import { test as base, expect } from "vitest"
-
-interface TestContext {
-  blogPost: { id: string; title: string; content: string }
-  user: { id: string; email: string }
-}
-
-const test = base.extend<TestContext>({
-  blogPost: async ({}, use) => {
-    const post = { id: "1", title: "Test Post", content: "Content" }
-    await use(post)
-    // cleanup after test
-  },
-  user: async ({}, use) => {
-    const user = { id: "1", email: "test@example.com" }
-    await use(user)
-  },
-})
-
-test("creates blog post with author", ({ blogPost, user }) => {
-  expect(blogPost.title).toBe("Test Post")
-  expect(user.email).toBe("test@example.com")
-})
-
-// Mocking with vi.fn()
-import { vi } from "vitest"
-
-test("handles form submission", async () => {
-  const mockSubmit = vi.fn()
-  render(<SignInForm onSubmit={mockSubmit} />)
-
-  await userEvent.click(screen.getByRole("button", { name: /sign in/i }))
-  expect(mockSubmit).toHaveBeenCalledOnce()
-})
-
-// Test hooks and lifecycle
-describe("user management", () => {
-  beforeAll(async () => {
-    // Setup database
-  })
-
-  beforeEach(() => {
-    // Reset state before each test
-  })
-
-  afterEach(() => {
-    // Cleanup after each test
-  })
-
-  afterAll(async () => {
-    // Teardown database
-  })
-
-  test("creates user", () => {
-    // Test implementation
-  })
-})
-
-// Module mocking
-vi.mock("@/lib/supabase/client", () => ({
-  createClient: vi.fn(() => ({
-    auth: {
-      signIn: vi.fn().mockResolvedValue({ data: { user: mockUser } }),
-    },
-  })),
-}))
 ```
 
 ### Best Practices
@@ -1077,7 +686,7 @@ vi.mock("@/lib/supabase/client", () => ({
 - Use Supabase MCP for any task involving Supabase and database
 - Use browseruse MCP for frontend testing, browser logs, screenshots, visiting URLs
 - Use context7 to get the latest documentation of a library
-- You MUST use Bash `ast-grep` command for a search that requires syntax-aware or structural matching, default to `ast-grep --lang typescript -p 'searchpattern'` (or set `--lang` appropriately) and avoid falling back to text-only tools unless user explicitly request a plain-text search.
+- Use Bash `ast-grep` command for a search that requires syntax-aware or structural matching, default to `ast-grep --lang typescript -p 'searchpattern'` (or set `--lang` appropriately) and avoid falling back to text-only tools unless user explicitly request a plain-text search.
 
 ## IMPORTANT: Git Convention
 
