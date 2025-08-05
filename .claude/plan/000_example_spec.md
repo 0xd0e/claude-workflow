@@ -66,9 +66,20 @@ src/
 ### Data Flow Design
 
 ```
-User Request → Validation → Processing → Storage → Response
-     ↓             ↓            ↓          ↓         ↓
-   Input →     Schema →    Business →    DB →    Output
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│  User Request   │    │   Validation    │    │   Processing    │    │    Storage      │    │    Response     │
+│                 │───▶│                 │───▶│                 │───▶│                 │───▶│                 │
+│ • Input Data    │    │ • Schema Check  │    │ • Business Logic│    │ • Database      │    │ • Output Data   │
+│ • User Action   │    │ • Type Safety   │    │ • Calculations  │    │ • Persistence   │    │ • Status Code   │
+│ • Form Submit   │    │ • Sanitization  │    │ • Transformations│    │ • Transactions  │    │ • Error Handling│
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
+        │                        │                        │                        │                        │
+        ▼                        ▼                        ▼                        ▼                        ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│ Client sends    │    │ Server validates│    │ Business rules  │    │ Data stored in  │    │ JSON response   │
+│ request with    │    │ against schemas │    │ applied and     │    │ database with   │    │ sent back with  │
+│ payload data    │    │ and sanitizes   │    │ operations run  │    │ proper indexing │    │ success/error   │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
 ### UI Design/Wireframe
@@ -100,9 +111,20 @@ User Request → Validation → Processing → Storage → Response
 ### User Experience Flow
 
 ```
-Entry Point → Authentication → Main Flow → Completion
-     ↓              ↓             ↓           ↓
-  Landing →      Login →      Action →    Success
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Entry Point   │    │ Authentication  │    │   Main Flow     │    │   Completion    │
+│                 │───▶│                 │───▶│                 │───▶│                 │
+│ • Landing Page  │    │ • Login Check   │    │ • Core Action   │    │ • Success State │
+│ • Initial Load  │    │ • Session Valid │    │ • User Intent   │    │ • Confirmation  │
+│ • Route Access  │    │ • Redirect Flow │    │ • Data Entry    │    │ • Next Steps    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
+        │                        │                        │                        │
+        ▼                        ▼                        ▼                        ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│ User visits     │    │ System checks   │    │ User performs   │    │ System shows    │
+│ page or clicks  │    │ authentication  │    │ primary task    │    │ success message │
+│ entry point     │    │ and redirects   │    │ or interaction  │    │ and guides next │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
 ### Technical Decisions
@@ -213,10 +235,20 @@ src/
 ### Data Flow Design
 
 ```
-Page Load → Hero Rendering → User Interaction → Console Action
-    ↓            ↓               ↓                ↓
- Server →    Client Side →   Event Handler →   Log Output
-Component    Hydration       Click/Hover       Placeholder
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Page Load     │    │  Hero Rendering │    │ User Interaction│    │  Console Action │
+│                 │───▶│                 │───▶│                 │───▶│                 │
+│ • Server Render │    │ • Client Side   │    │ • Event Handler │    │ • Log Output    │
+│ • Component     │    │ • Hydration     │    │ • Click/Hover   │    │ • Placeholder   │
+│ • Initial HTML  │    │ • Theme Support │    │ • Keyboard Nav  │    │ • Debug Info    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
+        │                        │                        │                        │
+        ▼                        ▼                        ▼                        ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│ Next.js sends   │    │ React hydrates  │    │ User clicks or  │    │ Console logs    │
+│ static HTML to  │    │ components and  │    │ hovers buttons  │    │ action for      │
+│ browser         │    │ attaches events │    │ with feedback   │    │ development     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
 ### UI Design/Wireframe
