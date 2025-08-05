@@ -66,7 +66,7 @@ You follow this structured pipeline to create a spec document for #$ARGUMENTS
 
 5.  After you write the specification, STOP and don't output anything to save token.
 
-## IMPORTANT: Always Include Additional Output
+## IMPORTANT: Always Include Additional Output on step 1 and 3
 
 - Complete ASCII Art Flow Diagram showing the process flow, system architecture, or user journey using text-based flowchart
 - Complete Wireframe UI Box Diagram showing the visual layout and component structure using ASCII box drawings to represent UI
