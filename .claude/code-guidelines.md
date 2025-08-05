@@ -57,6 +57,7 @@ IMPORTANT RULES:
 
 - Use path aliases (`@/`) not relative paths
 - NO index exports - Import directly
+- NEVER use direct process.env access - Import from `@/config/env`
 
 ```ts
 import { Button } from "@/components/ui/button"
@@ -74,6 +75,21 @@ import { userSchema } from "@/schemas/user"
 - Use zod `safeParse` instead of `parse`
 - ALWAYS infer types from Zod schemas for boundary data
 - NEVER define separate interfaces for data that has Zod schemas
+- Environment variables are EXCEPTED from Zod validation - centralize in `@/config/env` instead
+
+```ts
+//config/env.ts
+
+//No zod validation env
+export const env = {
+  // Client-side (NEXT_PUBLIC_*)
+  NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+
+  // Server-side
+  DATABASE_URL: process.env.DATABASE_URL!,
+} as const
+```
 
 ### IMPORTANT: TypeScript Type Organization
 
@@ -92,7 +108,7 @@ import { userSchema } from "@/schemas/user"
 
 ### IMPORTANT: Validation Rules - When to Use Zod vs TypeScript
 
-EVERY data input that crosses boundaries MUST be validated with Zod. Use inline types for component props and TypeScript types for utilities.
+EVERY data input that crosses boundaries (except env) MUST be validated with Zod. Use inline types for component props and TypeScript types for utilities.
 
 ### IMPORTANT: Required Validation Points
 
@@ -103,7 +119,7 @@ YOU MUST validate at these points:
 - External API responses
 - URL parameters
 - File uploads
-- User input of any kind
+- User input of any kind except env
 
 ### IMPORTANT: Form Validation Pattern
 
