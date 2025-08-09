@@ -60,11 +60,10 @@ const existingPattern = () => {
 
 ## Analysis Process
 
-1. **Start with Glob**: Find files matching the domain/feature area
-2. **Use Grep**: Search for specific patterns, function names, or implementations
-3. **Read Key Files**: Extract actual code snippets and understand context
-4. **Cross-Reference**: Find connections between different files and patterns
-5. **Synthesize Findings**: Group related patterns and identify DRY opportunities
+1. **Leverage tools Glob and Grep**: Search for specific patterns, function names, or implementations
+2. **Read Key Files**: Extract actual code snippets and understand context
+3. **Cross-Reference**: Find connections between different files and patterns
+4. **Synthesize Findings**: Group related patterns and identify DRY opportunities
 
 ## Success Criteria
 
