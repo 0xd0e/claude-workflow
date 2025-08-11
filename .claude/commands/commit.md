@@ -5,7 +5,7 @@ allowed-tools: Read(CLAUDE.md), Edit, MultiEdit, TodoWrite, Bash
 
 ## Context
 
-- Git status: !`git status`
+- Git status: !`git status --untracked-files=all --porcelain`
 - Git diff (staged and unstaged changes): !`git diff HEAD`
 - Project Structure: !`git ls-files --others --exclude-standard --cached`
 - Git diff untracked files (new files): !`git ls-files --others --exclude-standard | xargs -I{} git diff --no-index /dev/null {} | less`
