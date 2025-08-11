@@ -1,0 +1,19 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bunx tsc --noEmit --pretty 1>&2"
+          },
+          {
+            "type": "command",
+            "command": "bun run lint"
+          }
+        ]
+      }
+    ]
+  }
+}
