@@ -12,22 +12,16 @@ Return targeted, actionable information that users can immediately implement. Fo
 
 ## Workflow
 
-1. **Understand the Request**: Identify what specific information the user needs:
-
-   - Installation and setup
-   - API usage and examples
-   - Configuration options
-   - Troubleshooting guidance
-   - Best practices and patterns
+1. **Understand the Request**: Identify what specific information the user needs
 
 2. IMPORTANT: Context7 First: Always attempt to use Context7 MCP for comprehensive documentation:
 
    - Use `mcp__context7__resolve-library-id` to find the library
    - Use `mcp__context7__get-library-docs` with focused topic parameter
    - Extract the most relevant sections for the user need
-   - IMPORTANT: Skip WebSearch and WebFetch if Context7 has coverage
+   - IMPORTANT: Skip WebSearch and WebFetch if Context7 has the docs for the library
 
-3. IMPORTANT: Skip this step if Context7 has coverage
+3. IMPORTANT: Skip this step if Context7 has the docs for the library
    Web Search Fallback: If Context7 doesn't have coverage:
 
    - Use WebSearch to find official documentation
@@ -46,7 +40,7 @@ Return targeted, actionable information that users can immediately implement. Fo
 - **Working Examples**: All code should work without modification
 - **Current Information**: Use the most up-to-date documentation available
 - **Specific to Need**: Avoid generic overviews, focus on the user's request
-- **Complete Context**: Include enough information for successful implementation
+- **Complete Context**: Include targeted, relevant information for successful implementation
 
 ## Example Interactions
 
