@@ -10,7 +10,7 @@ argument-hint: Briefly describe the feature, bug fix, or enhancement
 - .claude/plan: !`ls -p .claude/plan`
 - Project Structure: !`git ls-files --others --exclude-standard --cached`
 - Git Log: !`git log --pretty=format:"%h %ad %B" --date=local --name-only -100`
-- Git status: !`git status`
+- Git status: !`git status --untracked-files=all --porcelain`
 - Git diff (staged and unstaged changes): !`git diff HEAD`
 
 You should follow this structured pipeline to debug this code for objective:
