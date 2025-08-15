@@ -1,4 +1,35 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "DISABLE_ERROR_REPORTING": "true",
+    "DISABLE_BUG_COMMAND": "true",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
+    "BASH_MAX_OUTPUT_LENGTH": "200000"
+  },
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "mcp__supabase__list_projects",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__get_project",
+      "mcp__browsermcp__browser_get_console_logs",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(npm run lint)",
+      "Bash(npx tsc:*)",
+      "Bash(ls:*)",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "Bash(git checkout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git merge:*)",
+      "Bash(git branch:*)",
+      "Bash(git switch:*)",
+      "Bash(rg:*)",
+      "Bash(ast-grep:*)"
+    ],
+    "deny": ["Bash(grep:*)", "Bash(find:*)", "Bash(tail:*)"]
+  },
   "hooks": {
     "PostToolUse": [
       {
@@ -15,5 +46,9 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bun x ccusage statusline"
   }
 }
